@@ -1,0 +1,98 @@
+﻿@model Mail_X.Models.Login
+
+<style>
+
+body{background-color:#e7eef7;}
+
+</style>
+
+<div class = "d-flex align-items-start justify-content-start m-0">
+
+    <img src="~/img/Bet_Logo.jpg" class = "img-fluid" style = "width:250px; height:100px; position:absolute; left:0;">
+
+</div>
+
+<div class = "text-center mt-3 p-2">
+
+        <h1>
+
+            MAIL X
+
+        </h1>
+
+</div>
+
+
+
+<div class = "d-flex align-items-center justify-content-center mt-5">
+
+    <div class="card text-center mt-2" style = "background-color : #f5f6fa; width:500px; height:450px;">
+        <div class="card-body">
+             <h5 class="card-title p-2">Welcome!</h5>
+             <p class="card-text mb-5">Please log in to your account</p>
+
+             @using (@Html.BeginForm("Validate","Login",Model)){
+
+                 @Html.AntiForgeryToken()
+
+                 @Html.ValidationSummary(true, "", new{@class = "text-danger"})
+
+                <p class = "my-5">
+                   @Html.TextBoxFor(Model => Model.EmpID, new{ @class = "form-control", @placeholder = "Employee ID"})
+                   @Html.ValidationMessageFor(Model => Model.EmpID, "", new {@class = "text-danger"})
+                </p>
+                
+    
+                <p class = "my-5">
+                    @Html.TextBoxFor(Model => Model.Password, new{ @class = "form-control my-2", @placeholder = "Password", @type = "Password"})
+                    @Html.ValidationMessageFor(Model => Model.Password, "", new {@class = "text-danger"})
+                </p>
+                
+
+                <button class="btn btn-primary mt-3">Login</button>
+                <br>
+
+                <div class = "pt-4 pr-4 pb-4 pl-2 float-start">
+
+                 <input type = "checkbox">Remember Me
+
+             </div>
+
+             <div class = "pt-4 pr-2 pb-4 pl-4 float-end">
+
+                 <a asp-area="" asp-controller = "Home" asp-action = "Index">Forgot Password?</a>
+
+             </div>
+
+                  
+             
+             }
+
+
+             @Html.ValidationSummary(true)
+
+            @if(ViewBag.Message != null){
+                
+                <script>
+
+                    alert("@ViewBag.Message");
+
+                </script>
+
+            } 
+
+             
+             <br>
+             
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+

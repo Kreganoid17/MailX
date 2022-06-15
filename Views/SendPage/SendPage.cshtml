@@ -1,0 +1,154 @@
+﻿@model IEnumerable<Mail_X.Models.Senders>
+
+<link rel="stylesheet" href="/css/Theme.css">
+
+<div class = "d-flex align-items-start justify-content-start m-0">
+
+    <img src="~/img/Bet_Logo.jpg" class = "img-fluid" style = "width:250px; height:100px; position:absolute; left:0;">
+
+</div>
+
+<br></br>
+<br></br>
+
+
+    <div class = "d-flex align-items-center justify-content-center mt-5">
+
+         <input type="text" class="form-control my-2 w-85" placeholder = "Search..." name="EmpID" id = "myInput" onkeyup = "myFunction()" style = "background-color:#f5f6fa;">
+         <label class = "px-3" style = "width:120px; font-weight:bold;">Filter By:</label>
+         <select id = "filter type" style = "background-color:#f5f6fa; height:30px; color:#bbbfcd; border-radius:3px;">
+             <option>Employee Name</option>
+             <option>Email</option>
+             <option>Role</option>
+         </select>
+
+    </div>
+
+    <br>
+ 
+  <h2>Team Leaders</h2>
+  <br>           
+  <table class="text-center w-100" id  id = "myTable">
+    <thead style = "background-color: lightblue;">
+      <tr style = "text-align:center;">
+        <th>Tick</th>
+        <th>Employee Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        
+      </tr>
+    </thead>
+    <tbody >
+          @foreach (var item in Model)
+                {
+                    
+                    <tr style = "text-align:center;">
+                    <td><input type = "checkbox"></td>
+                        <td>@item.EmpName</td>
+                        <td>@item.Email</td>
+                        <td>@item.DeptName</td>
+                    </tr>
+
+                }
+      
+    </tbody>
+  </table>
+
+  <div>
+        @using (@Html.BeginForm("ReturnToHome","Send"))
+        {
+                                    
+            <button class="btn btn-outline-primary float-start">Cancel</button>
+
+        }
+
+
+            <button class="btn btn-outline-primary float-end" data-bs-toggle = "modal" data-bs-target="#PasswordModal">Send</button>
+
+  </div>
+ 
+
+<div class = "modal fade" id="PasswordModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class = "modal-dialog">
+                <div class = "modal-content">
+                    <div class = "modal-header">
+                        <h5 class = "modal-title" id = "confirmModalLabel">Password</h5>
+                    </div>
+                    <div class = "modal-body" id = "modal_body">
+                        <input type = "password" placeholder = "Enter Email Password" id = "Password">
+                    </div>
+                    <div class = "modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss = "modal">Cancel</button>
+                        <button type="button" class="btn btn-primary"   data-bs-dismiss = "modal" onclick = "ValidatePassword()">Send</button>
+                    </div>
+                </div>
+            </div>
+       </div>
+
+<script type = "text/javascript">
+    
+  function myFunction() {
+    var input, filter, table, tr, td, i, txtValue, index;
+    index = document.getElementById("filter type").selectedIndex;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[index + 1];
+        if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+        }       
+    }
+}
+
+        var password;
+
+        function ValidatePassword(){
+        
+            var input = document.getElementById("Password").value;
+            var Emails = GetEmail();
+
+            var json = JSON.stringify(Emails);
+
+            var FormName = "@ViewBag.FormName";
+            var ID = "@ViewBag.FormID";
+            var FormID = ID.toString();
+
+            password = input.toString();
+
+
+            window.location.href = '@Url.Action("Validate", "Send")?password=' + password + '&email=' + json + '&FormName=' + FormName + '&FormID=' + FormID;
+        
+        }
+
+        function GetEmail(){
+        
+            var grid = document.getElementById("myTable");
+            
+            var checkboxes = grid.getElementsByTagName("input");
+
+            var Emails = [];
+
+            for(var i = 0; i < checkboxes.length; i++){
+            
+                if(checkboxes[i].checked){
+                
+                    var row = checkboxes[i].parentNode.parentNode;
+
+                    Emails.push(row.cells[2].innerHTML);
+                
+                }
+            
+            }
+
+            return Emails;
+        
+        }
+    
+</script>

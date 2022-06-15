@@ -1,0 +1,83 @@
+﻿@model Mail_X.Models.MarkAsDoneDetails
+
+
+<div class = "d-flex align-items-start justify-content-start m-0">
+
+    <img src="~/img/Bet_Logo.jpg" class = "img-fluid" style = "width:250px; height:100px; position:absolute; left:0;">
+
+</div>
+
+<div class = "d-flex align-items-center justify-content-center m-0 ">
+
+    <img src = "~/img/BET_Drape2.png" class = "img-fluid w-100" style = "height:260px; position:absolute; bottom:0; opacity:0.6">
+
+</div>
+
+<div class = "text-center mt-3 p-2">
+
+        <h1>
+
+            MARK AS DONE
+
+        </h1>
+
+</div>
+
+<div class = "d-flex align-items-center justify-content-center mt-5">
+
+    <div class="card text-center w-50 mt-2" style = "background-color : whitesmoke">
+        <div class="card-body">
+             <h5 class="card-title p-2">Welcome!</h5>
+             <p class="card-text mb-5">Please Enter your Credentials</p>
+
+            @using (@Html.BeginForm("ValidateDetailsDevOps","MarkAsDone", new {Model, ID = @ViewBag.ID })){
+
+                 @Html.AntiForgeryToken()
+
+                 @Html.ValidationSummary(true, "", new{@class = "text-danger"})
+
+                <p class = "my-5">
+                   @Html.TextBoxFor(Model => Model.DevOpsID, new{ @class = "form-control", @placeholder = "DevOps ID"})
+                   @Html.ValidationMessageFor(Model => Model.DevOpsID, "", new {@class = "text-danger"})
+                </p>
+                
+    
+                <p class = "my-5">
+                    @Html.TextBoxFor(Model => Model.Password, new{ @class = "form-control my-2", @placeholder = "Password", @type = "Password"})
+                    @Html.ValidationMessageFor(Model => Model.Password, "", new {@class = "text-danger"})
+                </p>
+                
+
+                <button class="btn btn-primary mt-3">Login</button>
+
+                  
+             
+             }
+
+
+             @Html.ValidationSummary(true)
+
+            @if(ViewBag.Message != null){
+                
+                <script>
+
+                    alert("@ViewBag.Message");
+
+                </script>
+
+            } 
+
+             
+             <br>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
