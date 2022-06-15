@@ -28,7 +28,7 @@ td {
 
       th:last-child {
         border-bottom-right-radius: 10px; 
-        border-top-right-radius: 10px; 
+        border-top-right-radius: 10px;
      }
 
       td:first-child {
