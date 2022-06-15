@@ -2,6 +2,9 @@
 
 @model Mail_X.Models.FormDetails
 
+<body>
+
+    <link rel="stylesheet" href="/css/Theme.css">
 
 <div class = "float-start">
 
@@ -28,8 +31,18 @@
 
         <div>
 
+            <label>Project Name:</label>
+            @Html.TextBoxFor(Model => Model.AppName, new {@class = "w-25", @style = "margin-left:105px;"})
+            @Html.ValidationMessageFor(Model => Model.AppName, "", new {@class = "text-danger"})
+
+        </div>
+
+        <br>
+
+        <div>
+
             <label>Deploy Start Date:</label>
-            @Html.TextBoxFor(Model => Model.StartDate, new {@type = "datetime-local"})
+            @Html.TextBoxFor(Model => Model.StartDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:77px;"})
             @Html.ValidationMessageFor(Model => Model.StartDate, "", new {@class = "text-danger"})
 
         </div>
@@ -38,8 +51,8 @@
 
         <div>
 
-            <label style = "margin-left:150px;">Deploy End Date:</label>
-            @Html.TextBoxFor(Model => Model.EndDate, new {@type = "datetime-local"})
+            <label>Deploy End Date:</label>
+            @Html.TextBoxFor(Model => Model.EndDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:83px;"})
             @Html.ValidationMessageFor(Model => Model.EndDate, "", new {@class = "text-danger"})
 
         </div>
@@ -49,7 +62,7 @@
         <div>
 
             <label>Application Name:</label>
-            @Html.TextBoxFor(Model => Model.AppName, new {@class = "w-50", @style = "margin-left:80px;"})
+            @Html.TextBoxFor(Model => Model.AppName, new {@class = "w-25", @style = "margin-left:75px;"})
             @Html.ValidationMessageFor(Model => Model.AppName, "", new {@class = "text-danger"})
 
         </div>
@@ -57,11 +70,50 @@
         <div class = "pt-4">
 
             <label>Deploy Environment:</label>
+            <select id = "filter type" style = "height:30px; border-radius:3px; margin-left:58px;" class = "w-25">
+             <option>UAT</option>
+             <option>Pre-Live</option>
+             <option>Live</option>
+            </select>
             
 
         </div>
 
+        <br>
+
+        <div>
+
+            <label>Server Name/IP Address:</label>
+            @Html.TextBoxFor(Model => Model.ServerName, new {@class = "w-25", @style = "margin-left:30px;"})
+            @Html.ValidationMessageFor(Model => Model.ServerName, "", new {@class = "text-danger"})
+
+        </div>
+
         <br></br>
+
+        <table class="text-center w-100" id = "myTable">
+            <thead>
+                <tr style = "text-align:center;">
+                    <th>Check If Completed</th>
+                    <th>Item Requested And Tested</th>
+                </tr>
+            </thead>
+            <tbody >
+          
+                <tr style = "text-align:center;">
+                    <td><input type = "checkbox"/></td>
+                    <td>Test 1</td>
+                </tr>
+
+                <tr style = "text-align:center;">
+                    <td><input type = "checkbox"/></td>
+                    <td>Test 2</td>
+                </tr>
+      
+            </tbody>
+        </table>
+
+  <br>
 
         <div>
 
@@ -72,7 +124,7 @@
 
         <div>
 
-           @Html.TextAreaFor(Model => Model.PullRequests, new{@class = "w-100", rows = "2", col = "50"})
+           @Html.TextAreaFor(Model => Model.PullRequests, new{@class = "w-100", rows = "5", col = "80"})
            @Html.ValidationMessageFor(Model => Model.PullRequests, "", new {@class = "text-danger"})
 
 
@@ -90,7 +142,7 @@
 
      <div class = "pt-1">
 
-           @Html.TextAreaFor(Model => Model.AdditionalNotes, new{@class = "w-100", rows = "2", col = "50"})
+           @Html.TextAreaFor(Model => Model.AdditionalNotes, new{@class = "w-100", rows = "7", col = "80"})
            @Html.ValidationMessageFor(Model => Model.AdditionalNotes, "", new {@class = "text-danger"})
 
      </div>
@@ -114,6 +166,7 @@
     
 }    
 
+</body>
 
 @Html.ValidationSummary(true)
 
