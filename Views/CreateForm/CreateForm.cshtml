@@ -57,6 +57,10 @@
             <label>Environment To Be Deployed To:</label>
             @Html.TextBoxFor(Model => Model.ServerName, new {@class = "w-50"})
             @Html.ValidationMessageFor(Model => Model.ServerName, "", new {@class = "text-danger"})
+                @Html.EditorFor(model=>model.UAT)
+                 @Html.EditorFor(model=>model.Live)
+                 @Html.EditorFor(model=>model.Pre-live)
+             @Html.DropdownList("Environment",new SelectList(ViewBag.data, "UAT","Live","Pre-live"))
 
         </div>
 
