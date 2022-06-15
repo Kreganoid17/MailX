@@ -1,4 +1,4 @@
-﻿
+
 
 @model Mail_X.Models.FormDetails
 
@@ -24,25 +24,27 @@
 
     @Html.ValidationSummary(true, "", new{@class = "text-danger"})
 
-    <div class = "float-start mt-5">
+    <div class = " mt-5 col">
 
-        <div class = "float-start">
+        <div>
 
-            <label>Deploy(ment) Date From:</label>
+            <label>Deploy Start Date:</label>
             @Html.TextBoxFor(Model => Model.StartDate, new {@type = "datetime-local"})
             @Html.ValidationMessageFor(Model => Model.StartDate, "", new {@class = "text-danger"})
 
         </div>
 
-        <div class = "float-end mx-5" >
+        <br>
 
-            <label style = "margin-left:150px;">Deploy(ment) Date To:</label>
+        <div>
+
+            <label style = "margin-left:150px;">Deploy End Date:</label>
             @Html.TextBoxFor(Model => Model.EndDate, new {@type = "datetime-local"})
             @Html.ValidationMessageFor(Model => Model.EndDate, "", new {@class = "text-danger"})
 
         </div>
 
-        <br></br>
+        <br>
 
         <div>
 
@@ -54,13 +56,8 @@
 
         <div class = "pt-4">
 
-            <label>Environment To Be Deployed To:</label>
-            @Html.TextBoxFor(Model => Model.ServerName, new {@class = "w-50"})
-            @Html.ValidationMessageFor(Model => Model.ServerName, "", new {@class = "text-danger"})
-                @Html.EditorFor(model=>model.UAT)
-                 @Html.EditorFor(model=>model.Live)
-                 @Html.EditorFor(model=>model.Pre-live)
-             @Html.DropdownList("Environment",new SelectList(ViewBag.data, "UAT","Live","Pre-live"))
+            <label>Deploy Environment:</label>
+            
 
         </div>
 
@@ -70,17 +67,13 @@
 
             <label>Pull Request:</label> 
 
-            <button type = "button" onclick="MakeArrayReq()" class = "float-end">Add New Request</button> 
-            <button type = "button" onclick="SeeArray()" class = "float-end">See Array</button>
-
-            <button type = "button" class = "fa fa-trash float-end" style = "width:50px;"></button>
-
 
         </div>
 
-        <div class = "pt-1 w-100" id = "PullReq">
+        <div>
 
-            <textarea class = "w-100", rows = "2" col = "50" name = "Request" ></textarea>
+           @Html.TextAreaFor(Model => Model.PullRequests, new{@class = "w-100", rows = "2", col = "50"})
+           @Html.ValidationMessageFor(Model => Model.PullRequests, "", new {@class = "text-danger"})
 
 
         </div>
