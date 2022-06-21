@@ -1,11 +1,11 @@
 ﻿table {
         border-collapse: separate;
-        border-spacing: 0 15px;
+        border-spacing: 0 10px;
       }
 
 th {
-    background-color: rgba(245,246,250,255);
-    color: #acb2c1;
+    background-color: #73a9ff;
+    color: #ffffff;
 }
 
 th,
@@ -13,7 +13,7 @@ td {
     width: 150px;
     text-align: center;
     border: none;
-    padding: 15px;
+    padding: 10px;
         
     }
 
@@ -46,5 +46,12 @@ td {
       }
 
 body {
-    background-color: rgba(231,238,247,255);
+    background-color: #D3E3FC;
+    font-family: Arial;
+    font-size: 17px;
+}
+
+#Finput {
+    border:1px solid black;
+    border-radius:5px;
 }

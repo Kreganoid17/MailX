@@ -1,35 +1,27 @@
 ﻿@model Mail_X.Models.Login
 
-<style>
+<link rel="stylesheet" href="/css/Theme.css">
 
-body{background-color:#e7eef7;}
 
-</style>
+<div class = "col text-center p-2">
 
-<div class = "d-flex align-items-start justify-content-start m-0">
 
-    <img src="~/img/Bet_Logo.jpg" class = "img-fluid" style = "width:250px; height:100px; position:absolute; left:0;">
+            <img src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:200px; height:120px; position:absolute; margin-left:-85px;">
 
-</div>
-
-<div class = "text-center mt-3 p-2">
-
-        <h1>
-
-            MAIL X
-
-        </h1>
 
 </div>
+
+<br></br>
+<br></br>
 
 
 
 <div class = "d-flex align-items-center justify-content-center mt-5">
 
-    <div class="card text-center mt-2" style = "background-color : #f5f6fa; width:500px; height:450px;">
+    <div class="card text-center mt-2" style = "background-color : #ffffff; width:500px; height:330px;">
         <div class="card-body">
-             <h5 class="card-title p-2">Welcome!</h5>
-             <p class="card-text mb-5">Please log in to your account</p>
+             <h5 class="card-title p-2">Welcome</h5>
+             <p class="card-text mb-3">Please log in to your account</p>
 
              @using (@Html.BeginForm("Validate","Login",Model)){
 
@@ -37,13 +29,13 @@ body{background-color:#e7eef7;}
 
                  @Html.ValidationSummary(true, "", new{@class = "text-danger"})
 
-                <p class = "my-5">
+                <p>
                    @Html.TextBoxFor(Model => Model.EmpID, new{ @class = "form-control", @placeholder = "Employee ID"})
                    @Html.ValidationMessageFor(Model => Model.EmpID, "", new {@class = "text-danger"})
                 </p>
                 
     
-                <p class = "my-5">
+                <p class = "my-2">
                     @Html.TextBoxFor(Model => Model.Password, new{ @class = "form-control my-2", @placeholder = "Password", @type = "Password"})
                     @Html.ValidationMessageFor(Model => Model.Password, "", new {@class = "text-danger"})
                 </p>
@@ -54,7 +46,7 @@ body{background-color:#e7eef7;}
 
                 <div class = "pt-4 pr-4 pb-4 pl-2 float-start">
 
-                 <input type = "checkbox">Remember Me
+                 <input type = "checkbox" style = "width:12px; height:12px;"> Remember Me
 
              </div>
 

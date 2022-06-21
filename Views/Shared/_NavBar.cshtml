@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<body>
+    <link rel="stylesheet" href="/css/Theme.css">
+<div class = "col-2 d-flex float-start">
+
+    <img src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:170px; height:100px;margin-left:-8px; margin-top:15px;">
+
+</div>
+
+<div class = "col-2 p-1 text-center" style = "position:absolute; top:20px; right:20px;">
+
+    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/8.webp" class="rounded-circle mb-1" style="width: 50px;"
+    alt="Avatar" />
+
+    <h5 class="mb-2"><strong>@HttpContextAccessor.HttpContext.Session.GetString("Username")</strong></h5>
+
+</div>
+
+<br></br>
+<br></br>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <div class = "d-flex align-items-center justify-content-center mt-5">
+
+         <input type="text" class="form-control my-2 w-85" placeholder = "Search..." name="EmpID" id = "myInput" onkeyup = "SearchTable()" style = "background-color:#f5f6fa;">
+         <label class = "px-3" style = "width:120px; font-weight:bold;">Order By:</label>
+         <select id = "filter type" style = "background-color:#f5f6fa; height:30px; border-radius:3px;">
+             <option>Form ID</option>
+             <option>Form Name</option>
+             <option>Date Created</option>
+             <option>Status</option>
+         </select>
+
+    </div>
+
+    </body>
+
+<script>
+function SearchTable() {
+    var input, filter, found, table, tr, td, i, j;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td");
+        for (j = 0; j < td.length; j++) {
+            if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                found = true;
+            }
+        }
+        if (found) {
+            tr[i].style.display = "";
+            found = false;
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}
+</script>

@@ -13,6 +13,9 @@ namespace Mail_X.Controllers
 
         public ActionResult ShowForm() {
 
+            List<string> Environment = new List<string> {"UAT", "Pre-Live", "Live"};
+            ViewBag.list = Environment;
+
             return View("~/Views/CreateForm/CreateForm.cshtml");
         
         }
@@ -24,8 +27,6 @@ namespace Mail_X.Controllers
             {
 
                 ModelState.Remove("SignOffs");
-
-                ModelState.Remove("PullRequests");
 
                 if (ModelState.IsValid)
                 {
@@ -58,6 +59,8 @@ namespace Mail_X.Controllers
             
             }
 
+            List<string> Environment = new List<string> { "UAT", "Pre-Live", "Live" };
+            ViewBag.list = Environment;
             return View("~/Views/CreateForm/CreateForm.cshtml");
 
         }

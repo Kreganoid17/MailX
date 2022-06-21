@@ -24,7 +24,6 @@ namespace Mail_X.Other_Classes
                 cmd.Parameters["@FormID"].Value = ID;
 
                 cmd.Parameters.AddWithValue("@FormNameSurname", SO.SignName);
-                cmd.Parameters.AddWithValue("@Signature", SO.Signature);
                 cmd.Parameters.AddWithValue("@Date", DateTime.Now);
                 cmd.Parameters.AddWithValue("@Comment", SO.Comments);
                 cmd.Parameters.AddWithValue("@DeptName", SO.DeptName);
@@ -72,11 +71,11 @@ namespace Mail_X.Other_Classes
 
                     if (reader.GetString(3) == "1") {
 
-                        HP.Status = "Done";
+                        HP.Status = "Deployed";
 
                     } else if (reader.GetString(3) == "0") {
 
-                        HP.Status = "Still Deploying";
+                        HP.Status = "In Progress";
 
                     }    
 
@@ -176,7 +175,6 @@ namespace Mail_X.Other_Classes
                         FD.AppName = reader.GetString(5);
                         FD.ServerName = reader.GetString(6);
                         FD.AdditionalNotes = reader.GetString(7);
-                        FD.SignOff = reader.GetString(8); 
 
                     }
 
@@ -195,7 +193,6 @@ namespace Mail_X.Other_Classes
                         SignOff Signoff = new SignOff();
 
                         Signoff.SignName = reader2.GetString(2);
-                        Signoff.Signature = reader2.GetString(3);
                         Signoff.SignDate = reader2.GetDateTime(4);
                         Signoff.Comments = reader2.GetString(5);
                         Signoff.DeptName = reader2.GetString(6);
@@ -246,8 +243,11 @@ namespace Mail_X.Other_Classes
                 cmd.Parameters.AddWithValue("@AppName", FD.AppName);
                 cmd.Parameters.AddWithValue("@ServerName", FD.ServerName);
                 cmd.Parameters.AddWithValue("@AddNotes", FD.AdditionalNotes);
-                cmd.Parameters.AddWithValue("@SignOff", FD.SignOff);
                 cmd.Parameters.AddWithValue("@Status", "0");
+                cmd.Parameters.AddWithValue("@ProjectName", FD.ProjectName);
+                cmd.Parameters.AddWithValue("@ProjectID", FD.ProjectID);
+                cmd.Parameters.AddWithValue("@PullRequest", FD.PullRequests);
+                cmd.Parameters.AddWithValue("@Environment", FD.Environment);
 
                 con.OpenDB();
                 cmd.ExecuteNonQuery();
@@ -348,7 +348,6 @@ namespace Mail_X.Other_Classes
                 cmd.Parameters.AddWithValue("@AppName", FD.AppName);
                 cmd.Parameters.AddWithValue("@ServerName", FD.ServerName);
                 cmd.Parameters.AddWithValue("@AddNotes", FD.AdditionalNotes);
-                cmd.Parameters.AddWithValue("@SignOff", FD.SignOff);
 
                 con.OpenDB();
                 cmd.ExecuteNonQuery();
