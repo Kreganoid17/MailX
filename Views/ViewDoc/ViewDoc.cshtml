@@ -1,55 +1,123 @@
 ﻿@model Mail_X.Models.FormDetails
 
+    <link rel="stylesheet" href="/css/Theme.css">
 
+<div class = "col-4 float-end mt-2">
 
-    <div class = "float-start">
-
-        <label>Software Release to Live</label>
+        
+        <h2>Software Release To Live</h2>
 
     </div>
 
     
-    <div class = "d-flex align-items-end justify-content-end mt-2">
+    <div class = "d-flex align-items-start justify-content-start mt-2 col-2">
 
-    <img src="~/img/Bet_Logo.jpg" class = "img-fluid" style = "width:170px; height:75px;">
+    <img src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:170px; height:90px; margin-left:-15px">
 
     </div>
 
-    <div class = "float-start mt-5">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <div class = "float-start">
+@using (@Html.BeginForm("UpdateForm", "Form", new { Model, @ViewBag.ID}))
+{
 
-            <label>Test Date From:</label>
-            @Html.TextBoxFor(Model => Model.StartDate, new {@readonly = "readonly", @style = "margin-left:100px"})
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new{@class = "text-danger"})
+
+    <div class = " mt-5 col">
+
+        <div>
+
+            <label>Project ID:</label>
+            @Html.TextBoxFor(Model => Model.ProjectID, new {@class = "w-25", @style = "margin-left:132px;", @id = "Finput", @readonly = "true"})
+            @Html.ValidationMessageFor(Model => Model.ProjectID, "", new {@class = "text-danger"})
 
         </div>
 
-        <div class = "float-end mx-5" >
+        <br>
 
-            <label style = "margin-left:150px;">Test Date To:</label>
-            @Html.TextBoxFor(Model => Model.EndDate, new {@readonly = "readonly", @style = "margin-left:100px"})
+        <div>
+
+            <label>Project Name:</label>
+            @Html.TextBoxFor(Model => Model.ProjectName, new {@class = "w-25", @style = "margin-left:105px;", @id = "Finput", @readonly = "true"})
+            @Html.ValidationMessageFor(Model => Model.ProjectName, "", new {@class = "text-danger"})
 
         </div>
 
-        <br></br>
+        <br>
+
+        <div>
+
+            <label>Deploy Start Date:</label>
+            @Html.TextBoxFor(Model => Model.StartDate, new {@class = "w-25", style = "margin-left:73px; height:30px;", @id = "Finput", @readonly = "true"})
+            @Html.ValidationMessageFor(Model => Model.StartDate, "", new {@class = "text-danger"})
+
+        </div>
+
+        <br>
+
+        <div>
+
+            <label>Deploy End Date:</label>
+            @Html.TextBoxFor(Model => Model.EndDate, new {@class = "w-25", style = "margin-left:79px; height:30px;", @id = "Finput", @readonly = "true"})
+            @Html.ValidationMessageFor(Model => Model.EndDate, "", new {@class = "text-danger"})
+
+        </div>
+
+        <br>
 
         <div>
 
             <label>Application Name:</label>
-            @Html.TextBoxFor(Model => Model.AppName, new {@class = "w-50", @style = "margin-left:80px;", @readonly = "readonly"})
+            @Html.TextBoxFor(Model => Model.AppName, new {@class = "w-25", @style = "margin-left:75px;", @id = "Finput", @readonly = "true"})
+            @Html.ValidationMessageFor(Model => Model.AppName, "", new {@class = "text-danger"})
 
         </div>
 
         <div class = "pt-4">
 
-            <label>Test Server Name/ IP Address:</label>
-            @Html.TextBoxFor(Model => Model.ServerName, new {@class = "w-50", @readonly = "readonly"})
+            <label>Environment:</label>
+            @Html.TextBoxFor(Model => Model.Environment, new {@class = "w-25", @style = "margin-left:112px;", @id = "Finput", @readonly = "true"})
+            @Html.ValidationMessageFor(Model => Model.Environment, "", new {@class = "text-danger"})
 
         </div>
 
-        <div class = "pt-5">
+        <br>
+
+        <div>
+
+            <label>DNS Name:</label>
+            @Html.TextBoxFor(Model => Model.ServerName, new {@class = "w-25", @style = "margin-left:123px;", @id = "Finput", @readonly = "true"})
+            @Html.ValidationMessageFor(Model => Model.ServerName, "", new {@class = "text-danger"})
+
+        </div>
+
+        <br></br>
+
+  <br>
+
+        <div>
+
+            <label>Pull Request:</label> 
+
+
+        </div>
+
+        <div>
+
+           @Html.TextAreaFor(Model => Model.PullRequests, new{@class = "w-100", rows = "5", col = "80", @id = "Finput", @readonly = "true"})
+           @Html.ValidationMessageFor(Model => Model.PullRequests, "", new {@class = "text-danger"})
+
+
+        </div>
+
+        <br>
+
+        <div class = "pt-3">
 
             <label>Additional Notes:</label>
+            
 
         </div>
 
@@ -58,87 +126,44 @@
 
      <div class = "pt-1">
 
-            @Html.TextAreaFor(Model => Model.AdditionalNotes, new {@class = "w-100", @readonly = "readonly", rows = "3", col = "50"})
+           @Html.TextAreaFor(Model => Model.AdditionalNotes, new{@class = "w-100", rows = "7", col = "80", @id = "Finput", @readonly = "true"})
+           @Html.ValidationMessageFor(Model => Model.AdditionalNotes, "", new {@class = "text-danger"})
 
      </div>
 
 
-     <div class = "pt-3">
-
-            <label>Sign Off:</label>
-
-     </div>
-
-     <div class = "pt-1">
-
-            @Html.TextAreaFor(Model => Model.SignOff, new {@class = "w-100", @readonly = "readonly", rows = "3", col = "50"})
-
-     </div>
-
-     <br></br>
-    
-
-@{
-
-    if(Model.SignOffs.Count != 0)
-    {
-        <h1>Sign Offs</h1>
-
-        for (int i = 0 ; i < Model.SignOffs.Count; i++){
-        <div class = "container">
-
-         <div class = "row">
+     <br>
 
             <div>
-            
-                <label>Department</label>
-                @Html.TextBoxFor(Model => Model.SignOffs[i].DeptName, new{ @class = "form-control", @readonly = "readonly"})
+
+                <label>Comments:</label>
+                @Html.TextAreaFor(Model => Model.Comments, new{@class = "w-100", rows = "4", col = "50", @id = "Finput", @readonly = "true"})
+                @Html.ValidationMessageFor(Model => Model.Comments, "", new {@class = "text-danger"})
+
+            </div>
+
+     <br>
+
+
+}
+
+@using (@Html.BeginForm("ReturnToHome","Send"))
+        {
+                                    
+            <button class="btn btn-primary float-start" style = "background-color: #73a9ff; border-color:#73a9ff;">Back</button>
+
+        }
+  
+@Html.ValidationSummary(true)
+
+@if(ViewBag.Message != null){
                 
-            
-            </div>
+                <script>
 
-            <div class = "col-6">
+                    alert("@ViewBag.Message");
 
-                <label>Name</label>
-                @Html.TextBoxFor(Model => Model.SignOffs[i].SignName, new{ @class = "form-control", @readonly = "readonly"})
+                </script>
 
-            </div>
-
-            <div class = "col-6">
-
-                <label>Signature</label>
-                @Html.TextBoxFor(Model => Model.SignOffs[i].Signature, new{ @class = "form-control", @readonly = "readonly"})
-
-            </div>
-
-            <br></br>
-            
-    </div>
-
-    <div class = "pt-3">
-
-            <label>Comments:</label>
-
-     </div>
-
-     <div class = "pt-1">
-
-            @Html.TextAreaFor(Model => Model.SignOffs[i].Comments, new{@class = "w-100", rows = "3", col = "50", @readonly = "readonly"})
-
-     </div>
-
-        </div>
+            } 
 
 
-
-
-    }
-
-    }
-    
-    
-    
-    
-
-    }
-     

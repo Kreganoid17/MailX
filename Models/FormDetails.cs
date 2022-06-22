@@ -16,15 +16,23 @@ namespace Mail_X.Models
         [Required(ErrorMessage = "Please Enter The Server Name")]
         public string ServerName { get; set; }
 
-        [Required(ErrorMessage = "Please Enter The Testing Requirements")]
+        [Required(ErrorMessage = "Please Enter Additional Notes")]
         public string AdditionalNotes { get; set; } 
 
-        [Required(ErrorMessage = "Please Enter The People Involved In The Sign Off")]
-        public string SignOff { get; set; }
+        [Required(ErrorMessage = "Please Enter a Project Name")]
+        public string ProjectName { get; set; }
 
-        public List<SignOff> SignOffs { get; set; }  
+        [Required(ErrorMessage = "Please Enter a Project ID")]
+        public string ProjectID{ get; set; }
 
-        public List<string> PullRequests { get; set; } 
+        [Required(ErrorMessage = "Please Enter a Pull Request")]
+        public string PullRequests { get; set; }
+
+        public List<SignOff> SignOffs { get; set; }
+
+        public string Environment { get; set; }
+
+        public string Comments { get; set; }
 
     }
 }

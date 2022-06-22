@@ -1,20 +1,35 @@
 ﻿@model IEnumerable<Mail_X.Models.Senders>
 
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
 <link rel="stylesheet" href="/css/Theme.css">
 
-<div class = "d-flex align-items-start justify-content-start m-0">
+<div>
 
-    <img src="~/img/Bet_Logo.jpg" class = "img-fluid" style = "width:250px; height:100px; position:absolute; left:0;">
+    <div class = "col-2 d-flex float-start">
+
+    <img src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:170px; height:100px;margin-left:-8px; margin-top:15px;">
+
+</div>
+
+<div class = "col-2 p-1 text-center" style = "position:absolute; top:20px; right:20px;">
+
+    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/8.webp" class="rounded-circle mb-1" style="width: 50px;"
+    alt="Avatar" />
+
+    <h5 class="mb-2"><strong>@HttpContextAccessor.HttpContext.Session.GetString("Username")</strong></h5>
+
+</div>
 
 </div>
 
 <br></br>
 <br></br>
 
-
     <div class = "d-flex align-items-center justify-content-center mt-5">
 
-         <input type="text" class="form-control my-2 w-85" placeholder = "Search..." name="EmpID" id = "myInput" onkeyup = "myFunction()" style = "background-color:#f5f6fa;">
+         <input type="text" class="form-control my-2 w-85" placeholder = "Search..." name="EmpID" id = "myInput" onkeyup = "SearchTable()" style = "background-color:#f5f6fa;">
          <label class = "px-3" style = "width:120px; font-weight:bold;">Filter By:</label>
          <select id = "filter type" style = "background-color:#f5f6fa; height:30px; color:#bbbfcd; border-radius:3px;">
              <option>Employee Name</option>
@@ -27,17 +42,23 @@
     <br>
  
   <h2>Team Leaders</h2>
-  <br>           
+  <br>   
+  
+  <table class="text-center w-100">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Check</th>
+                    <th scope="col">Employee</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+               </tr>
+           </thead>
+
+        </table>
+
   <table class="text-center w-100" id = "myTable">
-    <thead style = "background-color: lightblue;">
-      <tr style = "text-align:center;">
-        <th>Tick</th>
-        <th>Employee Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        
-      </tr>
-    </thead>
+    
     <tbody >
           @foreach (var item in Model)
                 {
@@ -87,23 +108,25 @@
 
 <script type = "text/javascript">
     
-  function myFunction() {
-    var input, filter, table, tr, td, i, txtValue, index;
-    index = document.getElementById("filter type").selectedIndex;
+function SearchTable() {
+    var input, filter, found, table, tr, td, i, j;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[index + 1];
-        if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        td = tr[i].getElementsByTagName("td");
+        for (j = 0; j < td.length; j++) {
+            if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                found = true;
+            }
+        }
+        if (found) {
             tr[i].style.display = "";
+            found = false;
         } else {
             tr[i].style.display = "none";
         }
-        }       
     }
 }
 

@@ -16,7 +16,7 @@
     
     <div class = "d-flex align-items-start justify-content-start mt-2 col-2">
 
-    <img src="~/img/BET Logo.png" class = "img-fluid" style = "width:170px; height:75px;">
+    <img src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:170px; height:90px; margin-left:-15px">
 
     </div>
 
@@ -53,7 +53,7 @@
         <div>
 
             <label>Deploy Start Date:</label>
-            @Html.TextBoxFor(Model => Model.StartDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:77px;", @id = "Finput"})
+            @Html.TextBoxFor(Model => Model.StartDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:73px; height:30px;", @id = "Finput"})
             @Html.ValidationMessageFor(Model => Model.StartDate, "", new {@class = "text-danger"})
 
         </div>
@@ -63,7 +63,7 @@
         <div>
 
             <label>Deploy End Date:</label>
-            @Html.TextBoxFor(Model => Model.EndDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:83px;", @id = "Finput"})
+            @Html.TextBoxFor(Model => Model.EndDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:79px; height:30px;", @id = "Finput"})
             @Html.ValidationMessageFor(Model => Model.EndDate, "", new {@class = "text-danger"})
 
         </div>
@@ -81,7 +81,7 @@
         <div class = "pt-4">
 
             <label>Environment:</label>
-            @Html.DropDownListFor(Model => Model.Environment, new SelectList(@ViewBag.list), new {@class = "w-25", @style = "margin-left:112px;", @id = "Finput"})
+            @Html.DropDownListFor(Model => Model.Environment, new SelectList(@ViewBag.list), new {@class = "w-25", @style = "margin-left:112px; height:30px;", @id = "Finput"})
 
         </div>
 
@@ -136,50 +136,26 @@
 
      <br>
 
-     <div class = "container">
-
-            <div class = "row">
-
             <div>
-            
-                <label><b>Developer:</b></label>
-                
-            
-            </div>
-
-            <div class = "col-6">
-
-                <label>Name</label>
-                @Html.TextBoxFor(Model => Model.AppName, new {@class = "w-100"})
-                @Html.ValidationMessageFor(Model => Model.AppName, "", new {@class = "text-danger"})
-
-            </div>
-
-            <div class = "col-6">
-
-                <label>Signature</label>
-                @Html.TextBoxFor(Model => Model.AppName, new {@class = "w-100"})
-                @Html.ValidationMessageFor(Model => Model.AppName, "", new {@class = "text-danger"})
-
-            </div>
-
-            <div class = "col-12">
 
                 <label>Comments:</label>
-                @Html.TextAreaFor(Model => Model.SignOffs, new{@class = "w-100", rows = "2", col = "50"})
+                @Html.TextAreaFor(Model => Model.SignOffs, new{@class = "w-100", rows = "4", col = "50", @id = "Finput"})
                 @Html.ValidationMessageFor(Model => Model.SignOffs, "", new {@class = "text-danger"})
 
             </div>
-            
-    </div>
 
-     </div>
+     <br>
 
-     <br></br>
-
-     <button class = "btn btn-primary">Create Form</button>
+     <button class = "btn btn-primary float-end" style = "background-color: #73a9ff; border-color:#73a9ff;">Create Form</button>
     
 }    
+
+@using (@Html.BeginForm("ReturnToHome","Send"))
+        {
+                                    
+            <button class="btn btn-primary float-start" style = "background-color: #73a9ff; border-color:#73a9ff;">Back</button>
+
+        }
 
 </body>
 

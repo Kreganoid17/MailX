@@ -38,6 +38,9 @@ namespace Mail_X.Controllers
 
             ViewBag.ID = ID;
 
+            List<string> Environment = new List<string> { "UAT", "Pre-Live", "Live" };
+            ViewBag.list = Environment;
+
             return View("~/Views/UpdateView/UpdateView.cshtml", FD);
 
         }
