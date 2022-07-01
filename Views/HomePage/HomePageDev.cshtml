@@ -34,8 +34,10 @@
 
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">Form ID</th>
-                    <th scope="col">Form Name</th>
+                    <th scope="col" style = "display:none;">Deploy ID</th>
+                    <th scope="col" style = "border-top-left-radius:10px; border-bottom-left-radius:10px;">Project ID</th>
+                    <th scope="col">Deploy Name</th>
+                    <th scope="col">Project Name</th>
                     <th scope="col">Date Created</th>
                     <th scope="col">Status</th>
                     <th scope="col">Properties</th>
@@ -52,9 +54,11 @@
                 {
                     
                     <tr>
-                        <td>@item.FormID</td>
+                        <td style = "display:none;">@item.FormID.ToString()</td>
+                        <td style = "border-top-left-radius:10px; border-bottom-left-radius:10px;">@item.PID</td>
                         <td>@item.FormName</td>
-                        <td>@item.FDate</td>
+                        <td>@item.PName</td>
+                        <td>@item.FDate.ToString("dd/MM/yyyy")</td>
                         <td>@item.Status</td>
                         <td>
 
@@ -71,25 +75,23 @@
 
                             </div>
 
-                            <div style = "flex:1;">
+                                    <div style = "flex:1;">
 
-                                @using (@Html.BeginForm("UpdateDoc","HomePage", new { id = @item.FormID}))
-                                {
+                                    @using (@Html.BeginForm("UpdateDoc","HomePage", new { id = @item.FormID}))
+                                    {
                                     
-                                    <button type = "submit" class = "fa fa-edit" style = "border:0; background-color:#ffffff;"></button>
+                                        <button type = "submit" class = "fa fa-edit" style = "border:0; background-color:#ffffff;"></button>
 
-                                }
+                                     }
 
-                            </div>
+                                     </div>
 
-                            <div style = "flex:1;">
+                                     <div style = "flex:1;">
 
-                                    <button type = "submit" class = "fa fa-trash" style = "border:0; background-color:#ffffff; color:#EF5A5A;" data-bs-toggle = "modal" data-bs-target="#confirmModal" onclick = "ShowModal(@item.FormID)"></button>
+                                         <button type = "submit" class = "fa fa-trash" style = "border:0; background-color:#ffffff; color:#EF5A5A;" data-bs-toggle = "modal" data-bs-target="#confirmModal" onclick = "ShowModal(@item.FormID)"></button>
 
-                            </div>
-
-                           
-
+                                     </div>
+                      
                             <div style = "flex:1;">
 
                                 @using (@Html.BeginForm("Send","HomePage", new { ID= @item.FormID, FormName = @item.FormName}))
@@ -130,7 +132,7 @@
                         <button type = "button" class = "btn-close" data-bs-dismiss = "modal" aria-label = "Close"></button>
                     </div>
                     <div class = "modal-body" id = "modal_body">
-                        
+         
                     </div>
                     <div class = "modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss = "modal">No</button>
@@ -149,14 +151,13 @@
         var DeleteID;
 
         function ShowModal(ID){
-        
-            document.getElementById("modal_body").innerHTML = "are you sure you want to delete record with from ID: " + ID;
+
+            document.getElementById("modal_body").innerHTML = "are you sure you want to delete record with Deploy ID:" + ID;
 
             DeleteID = ID;
 
             $("#confirmModal").modal();
-
-        
+     
         }
 
         function DeleteForm(){
@@ -166,6 +167,77 @@
         }
     
     </script>
+
+    <script>
+
+    var th = document.getElementsByTagName('th');
+    var asc = true;
+
+    for(let col = 0; col < th.length; col++){
+    
+        th[col].addEventListener('click',item(col));
+        
+    
+    }
+
+    function item(col){
+    
+        return function(){
+        
+            asc = !asc;
+            console.log(col + " " +asc);
+            sortTable(col,asc);
+        
+        }
+    
+    }
+
+    function sortTable(col,asc) {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("myTable");
+  switching = true;
+
+  while (switching) {
+
+    switching = false;
+    rows = table.rows;
+
+    for (i = 0; i < (rows.length - 1); i++) {
+
+      shouldSwitch = false;
+
+      x = rows[i].getElementsByTagName("TD")[col];
+      y = rows[i + 1].getElementsByTagName("TD")[col];
+
+      if(asc == true){
+
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+
+        shouldSwitch = true;
+        break;
+
+      }
+      }else if(asc == false){
+      
+      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+
+        shouldSwitch = true;
+        break;
+      }
+      
+      }
+      }
+
+    
+    if (shouldSwitch) {
+
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
+</script>
 
 @if(TempData["Message"] != null){
                 

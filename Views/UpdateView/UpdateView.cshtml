@@ -75,12 +75,12 @@
 
         </div>
 
-        <div class = "pt-4">
-
-            @*<label>Environment:</label>
+        @*<div class = "pt-4">
+    
+            <label>Environment:</label>
             @Html.DropDownListFor(Model => Model.Environment, new SelectList(@ViewBag.list), new {@class = "w-25", @style = "margin-left:112px; height:30px;", @id = "Finput"})
-            *@
-        </div>
+            
+        </div>*@
 
         <br>
 
@@ -136,8 +136,8 @@
             <div>
 
                 <label>Comments:</label>
-                @Html.TextAreaFor(Model => Model.SignOffs, new{@class = "w-100", rows = "4", col = "50", @id = "Finput"})
-                @Html.ValidationMessageFor(Model => Model.SignOffs, "", new {@class = "text-danger"})
+                @Html.TextAreaFor(Model => Model.Comments, new{@class = "w-100", rows = "4", col = "50", @id = "Finput"})
+                @Html.ValidationMessageFor(Model => Model.Comments, "", new {@class = "text-danger"})
 
             </div>
 

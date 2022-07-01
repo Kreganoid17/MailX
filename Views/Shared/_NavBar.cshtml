@@ -9,15 +9,26 @@
 
 </div>
 
-<div class = "col-2 p-1 text-center" style = "position:absolute; top:20px; right:20px;">
+<div class = "col-2 p-1 text-center" style = "position:absolute; top:20px; right:32px;">
+
+    <div>
 
     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/8.webp" class="rounded-circle mb-1" style="width: 50px;"
     alt="Avatar" />
 
-    <h5 class="mb-2"><strong>@HttpContextAccessor.HttpContext.Session.GetString("Username")</strong></h5>
+    <h5 class="mb-2">@HttpContextAccessor.HttpContext.Session.GetString("Username")</h5>
+
+    @using (@Html.BeginForm("LogOut","Login")){
+                                    
+            <button class="btn btn-primary" style = "background-color: #73a9ff; border-color:#73a9ff; height:30px; width:80px; padding:2px;">Log Out</button>
+
+        }
+
+    </div>
 
 </div>
 
+<br></br>
 <br></br>
 <br></br>
 
@@ -26,20 +37,15 @@
 
     <div class = "d-flex align-items-center justify-content-center mt-5">
 
-         <input type="text" class="form-control my-2 w-85" placeholder = "Search..." name="EmpID" id = "myInput" onkeyup = "SearchTable()" style = "background-color:#f5f6fa;">
-         <label class = "px-3" style = "width:120px; font-weight:bold;">Order By:</label>
-         <select id = "filter type" style = "background-color:#f5f6fa; height:30px; border-radius:3px;">
-             <option>Form ID</option>
-             <option>Form Name</option>
-             <option>Date Created</option>
-             <option>Status</option>
-         </select>
+         <input type="text" class="form-control my-2 w-75" placeholder = "Search..." name="EmpID" id = "myInput" onkeyup = "SearchTable()" style = "background-color:#f5f6fa;">
+         
 
     </div>
 
     </body>
 
 <script>
+
 function SearchTable() {
     var input, filter, found, table, tr, td, i, j;
     input = document.getElementById("myInput");
@@ -62,3 +68,4 @@ function SearchTable() {
     }
 }
 </script>
+

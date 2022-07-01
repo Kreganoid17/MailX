@@ -144,8 +144,76 @@
 
      <br>
 
+        @if(Model.SignOffs != null)
+        {
 
-}
+            <h2>Approvals</h2>
+            <br></br>
+
+            for (int i = 0; i < Model.SignOffs.Count; i++)
+            {
+                
+                <div class = "container">
+
+    <div class = "col">
+
+        <div>
+
+            <div class = "row">
+
+            <div class = "col-4" >
+                <label>Employee ID:</label>
+                @Html.TextBoxFor(Model => Model.SignOffs[i].EmpID, new{@id="Finput", @class="w-100", @readonly = "true"})
+            </div>
+
+            <div class = "col-4">
+                <label>Name:</label>
+                @Html.TextBoxFor(Model => Model.SignOffs[i].SignName, new{@id="Finput", @class="w-100", @readonly = "true"})
+            </div>
+
+            <div class = "col-4">
+                <label>Department Name:</label>
+                @Html.TextBoxFor(Model => Model.SignOffs[i].DeptName, new{@id="Finput", @class="w-100", @readonly = "true"})
+            </div>
+
+            <div class = "col-4">
+                <label>Date Approved:</label>
+                @Html.TextBoxFor(Model => Model.SignOffs[i].SignDate, new{@id="Finput", @class="w-100", @readonly = "true"})
+            </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class = "pt-3">
+
+            <label>Comments:</label>
+
+     </div>
+
+     <div class = "pt-1">
+
+            @Html.TextAreaFor(Model => Model.SignOffs[i].Comments, new{@class = "w-100", rows = "5", col = "50", @id = "Finput", @readonly = "true"})
+            @Html.ValidationMessageFor(Model => Model.Comments, "", new {@class = "text-danger"})
+
+     </div>
+
+</div>
+
+<br>
+
+            }
+
+
+        }
+
+     }
+
+
 
 @using (@Html.BeginForm("ReturnToHome","Send"))
         {
