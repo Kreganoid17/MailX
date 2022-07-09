@@ -4,27 +4,23 @@
 
 <body>
 
-<div class = "d-flex align-items-start justify-content-start m-0">
+<div class = "col text-center p-2">
 
-    <img src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:250px; height:100px; position:absolute; left:0;">
 
-</div>
+            <img src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:200px; height:120px; position:absolute; margin-left:-85px;">
 
-<div class = "text-center mt-3 p-2">
-
-        <h1>
-
-            MARK AS DONE
-
-        </h1>
 
 </div>
+
+<br></br>
+<br></br>
+
 
 <div class = "d-flex align-items-center justify-content-center mt-5">
 
     <div class="card text-center w-50 mt-2" style = "background-color : whitesmoke">
         <div class="card-body">
-             <h5 class="card-title p-2">Mark As Done</h5>
+             <h2 class="card-title p-2">Mark As Done</h2>
              <p class="card-text mb-5">Please Enter your Credentials</p>
 
             @using (@Html.BeginForm("ValidateDetailsDevOps","MarkAsDone", new {Model, ID = @ViewBag.ID })){

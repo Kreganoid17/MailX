@@ -16,12 +16,17 @@ namespace Mail_X.Controllers
 
         }
 
-        private void SetUser(string Username, string Email, string ID, string Home) {
+        private void SetUser(UserDetails userDetails, string Home) {
 
-            HttpContext.Session.SetString("Username", Username);
-            HttpContext.Session.SetString("Email", Email);
-            HttpContext.Session.SetString("ID", ID);
+            HttpContext.Session.SetString("ID", userDetails.EmpID);
+            HttpContext.Session.SetString("Username", userDetails.UserName);
+            HttpContext.Session.SetString("Email", userDetails.Email);
+            HttpContext.Session.SetString("DeptID", userDetails.DeptID.ToString());
+            HttpContext.Session.SetString("DeptName", userDetails.DeptName);
+            HttpContext.Session.SetString("EPassword", userDetails.EmailPassword);
+            HttpContext.Session.SetString("IsLeader", userDetails.IsLeader.ToString());
             HttpContext.Session.SetString("Home", Home);
+            
 
         } 
 
@@ -32,59 +37,62 @@ namespace Mail_X.Controllers
 
             LoginValidate LV = new LoginValidate();
 
-            LV.Validate(EmpID, Password);
-
+            bool IsValid = LV.Validate(EmpID, Password);
 
             try
             {
 
-                if(ModelState.IsValid){
+                if (ModelState.IsValid)
+                {
 
-                    if (LV.Validate(EmpID, Password) == true)
+                    if (IsValid == true)
                     {
 
                         DBFunctions DBF = new DBFunctions();
 
                         List<HomePage> HP = new List<HomePage>();
 
-                        LV.GetRole(EmpID);
+                        UserDetails userDetails = new UserDetails();
+
+                        userDetails = LV.GetUserDetails(EmpID);
 
                         HP = DBF.FetchAll();
 
-                        if (LV.GetRole(EmpID) == 1)
+                        if (userDetails.DeptID == 1)
                         {
 
-                            SetUser(LV.GetUserDetails(EmpID).UserName, LV.GetUserDetails(EmpID).Email, LV.GetUserDetails(EmpID).UserID, "~/Views/HomePage/HomePageDev.cshtml");
+                            SetUser(userDetails, "~/Views/HomePage/HomePageDev.cshtml");
 
-                            return View("~/Views/HomePage/HomePageDev.cshtml", HP);
+                            return RedirectToAction("Dashboard","Dashboard");
 
                         }
-                        else if (LV.GetRole(EmpID) == 2)
+                        else if (userDetails.DeptID == 2)
                         {
-                            SetUser(LV.GetUserDetails(EmpID).UserName, LV.GetUserDetails(EmpID).Email, LV.GetUserDetails(EmpID).UserID, "~/Views/HomePage/HomePageDevOps.cshtml");
 
-                            return View("~/Views/HomePage/HomePageDevOps.cshtml", HP);
+                            SetUser(userDetails, "~/Views/HomePage/HomePageDevOps.cshtml");
 
-                        }
-                        else {
-
-                            SetUser(LV.GetUserDetails(EmpID).UserName, LV.GetUserDetails(EmpID).Email, LV.GetUserDetails(EmpID).UserID, "~/Views/HomePage/HomePageOther.cshtml");
-
-                            return View("~/Views/HomePage/HomePageOther.cshtml", HP);
+                            return RedirectToAction("Dashboard", "Dashboard");
 
                         }
+                        else
+                        {
 
-                        
+                            SetUser(userDetails, "~/Views/HomePage/HomePageOther.cshtml");
+
+                            return RedirectToAction("Dashboard", "Dashboard");
+
+
+                        }
 
                     }
                     else {
 
                         ViewBag.Message = String.Format("Invalid User Credentials");
+
                     }
 
-                }
- 
 
+                }
             }
             catch (Exception ex)
             {
@@ -95,6 +103,15 @@ namespace Mail_X.Controllers
             return View("~/Views/Login/Login.cshtml");
 
         }
+
+
+        public ActionResult LogOut() {
+
+            HttpContext.Session.Clear();
+            return View("~/Views/Login/Login.cshtml");
+
+        }
+
     }
 
     

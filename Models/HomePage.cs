@@ -7,6 +7,10 @@
 
         public string FormName { get; set; }
 
+        public string PName { get; set; }
+
+        public string PID { get; set; }
+
         public DateTime FDate { get; set;}
 
         public string Status { get; set; }

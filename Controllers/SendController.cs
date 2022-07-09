@@ -46,6 +46,8 @@ namespace Mail_X.Controllers
 
                 HP = DBF.FetchAll();
 
+                TempData["Message"] = "Email(s) Sent Successfully";
+
                 return RedirectToAction("ReturnHome","HomePage", HP);
 
             }
@@ -86,8 +88,8 @@ namespace Mail_X.Controllers
 
                     MailMessage mm = new MailMessage(SenderEmail, RecipientEmail[i]);
 
-                    mm.Subject = "Form Created";
-                    mm.Body = FormName + " " + ID;
+                    mm.Subject = "Deployment Requested";
+                    mm.Body = "A new deployment is requested with Deploy name:" + FormName + " and Deploy ID:" + ID;
 
                     smtp.Send(mm);
 

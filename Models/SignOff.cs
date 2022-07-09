@@ -4,15 +4,17 @@ namespace Mail_X.Models
 {
     public class SignOff
     {
-        [Required(ErrorMessage = "Please Enter Signatures Name")]
+        public int FormID { get; set; }
+
         public string SignName { get; set; }
 
         public DateTime SignDate { get; set; }
 
         public string Comments  { get; set; }
 
-        [Required(ErrorMessage = "Please Enter Department Name")]
         public string DeptName { get; set; }
+
+        public string EmpID { get; set; }
 
 
     }

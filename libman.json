@@ -13,6 +13,14 @@
     {
       "library": "toastr.js@2.1.4",
       "destination": "wwwroot/lib/toastr.js/"
+    },
+    {
+      "library": "Sortable@1.15.0",
+      "destination": "wwwroot/lib/Sortable/"
+    },
+    {
+      "library": "bootstrap-toaster@5.1.0",
+      "destination": "wwwroot/lib/bootstrap-toaster/"
     }
   ]
 }

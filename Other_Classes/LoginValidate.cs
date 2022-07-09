@@ -31,7 +31,7 @@ namespace Mail_X.Other_Classes
                 {
 
                     logindata.EmpID = reader.GetString(0);
-                    logindata.Password = reader.GetString(1);
+                    logindata.Password = reader.GetString(3);
 
                 }
 
@@ -63,51 +63,14 @@ namespace Mail_X.Other_Classes
 
         }
 
-        public int GetRole(string EmpID) {
-
-            Connection conn = new Connection();
-
-            SqlCommand cmd = new SqlCommand("dbo.GetEmpRole", conn.con);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            try
-            {
-                cmd.Parameters.AddWithValue("@EmpID", EmpID);
-
-                conn.OpenDB();
-                
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                Role role = new Role();
-
-                while (reader.Read())
-                {
-
-                    role.RoleEmp = reader.GetInt32(0);
-
-
-                }
-
-                conn.CloseDB();
-
-                return role.RoleEmp;
-
-            }
-            catch (Exception ex)
-            {
-
-                conn.CloseDB();
-                throw ex;
-
-            }
-
-        }
+        
 
         public UserDetails GetUserDetails(string EmpID) {
 
             Connection conn = new Connection();
 
             SqlCommand cmd = new SqlCommand("dbo.FetchAll", conn.con);
+
 
             try
             {
@@ -119,16 +82,23 @@ namespace Mail_X.Other_Classes
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlDataReader reader = cmd.ExecuteReader();
 
+                string Deptname;
 
                 UserDetails userdetails = new UserDetails();
 
                 while (reader.Read())
-                {
-                    
+                { 
 
-                    userdetails.UserName = reader.GetString(2);
-                    userdetails.Email = reader.GetString(3);
-                    userdetails.UserID = reader.GetString(0);
+                    userdetails.EmpID = reader.GetString(0);
+                    userdetails.UserName = reader.GetString(1);
+                    userdetails.Email = reader.GetString(2);
+                    userdetails.DeptID = reader.GetInt32(4);
+
+                    Deptname = GetDeptName(reader.GetInt32(4));
+
+                    userdetails.EmailPassword = reader.GetString(5);
+                    userdetails.IsLeader = reader.GetInt32(6);
+                    userdetails.DeptName = Deptname;
 
                 }
 
@@ -140,6 +110,51 @@ namespace Mail_X.Other_Classes
             catch (Exception ex)
             {
                 conn.CloseDB();
+                throw ex;
+
+            }
+
+        }
+
+        public string GetDeptName(int DeptID)
+        {
+
+            Connection con = new Connection();
+
+            SqlCommand cmd = new SqlCommand("dbo.GetDept", con.con);
+
+            
+
+            string DeptName = "";
+
+            
+
+            try
+            {
+                con.OpenDB();
+
+                cmd.Parameters.Add("@DeptID", SqlDbType.Int);
+                cmd.Parameters["@DeptID"].Value = DeptID;
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+
+                    DeptName = reader.GetString(0);
+
+                }
+
+                return DeptName;
+                
+            }
+            catch (Exception ex)
+            {
+
+                con.CloseDB();
                 throw ex;
 
             }

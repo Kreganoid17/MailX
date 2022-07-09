@@ -1,0 +1,348 @@
+﻿@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+
+<link rel="stylesheet" href="/css/Theme.css">
+
+<br></br>
+<br></br>
+
+
+<div>
+
+    @Html.Partial("_DashboardNavBar")
+
+</div>
+
+<div class = "col-12">
+
+    <div class = "row">
+
+        <div class = "col-3 d-flex float-start">
+
+        @using (@Html.BeginForm("ReturnToHome","Send"))
+            {
+                                    
+                <input type="image" src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:170px; height:100px; margin-left:-8px;margin-top:-20px;">
+
+            }
+
+
+    </div >
+
+
+    <div class = "col-3 p-1 text-center" style = "position:absolute; top:20px; right:-25px;">
+
+    <div>
+
+    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/8.webp" class="rounded-circle mb-1" style="width: 50px;"
+    alt="Avatar" />
+
+    <h5 class="mb-2">@HttpContextAccessor.HttpContext.Session.GetString("Username")</h5>
+
+    @using (@Html.BeginForm("LogOut","Login")){
+                                    
+            <button class="btn btn-primary" style = "background-color: #73a9ff; border-color:#73a9ff; height:30px; width:80px; padding:2px;">Log Out</button>
+
+        }
+
+    </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<body onload = "CreateCard()" class = "main" style = "margin-top:-50px;">
+
+<div class = "col-12 mt-5 p-2">
+
+    <div class = "row" style = "height:80px;" id = "Card">
+
+        @*<div class = "card col mx-1 justify-content-center" style = "border-left:5px solid blue;" id = "DBoard">
+
+            <div class = "row" id = "row">
+
+                <div class = "col float-start">1</div>
+                <div class = "col float-end text-center">2</div>
+         
+
+            </div>
+            
+
+        </div>
+
+        <div class = "card col mx-1 text-center" id = "DBoard">
+
+            <p>2</p>
+    
+         </div>
+
+         <div class = "card col mx-1 text-center" id = "DBoard">
+
+            <p>3</p>
+
+        </div>
+
+        <div class = "card col mx-1 text-center" id = "DBoard">
+
+            <p>4</p>
+    
+         </div>*@
+
+    </div>
+
+</div>
+
+<br></br>
+
+<div class = "container col-12">
+
+    <div class = "row align-items-end">
+
+        <div class = "card col-9" style = "background-color:#ffffff; height:320px; border-radius:5px;">
+
+            <div>
+
+                <canvas id="BarChart" style = "height:300px;"></canvas>
+
+            </div>
+
+        </div>
+
+        <div class = "card col" style = "background-color:#ffffff; height:320px; border-radius:5px; margin-left:8px;">
+
+            <div>
+
+                <canvas id="PieChart" style = "height:300px;"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    var jsonlabel = '@ViewBag.StatusLabel';
+    var jsoncount = '@ViewBag.StatusCount';
+    var jsoncolor = '@ViewBag.StatusColor';
+
+    var Count = JSON.parse(jsoncount.replace(/&quot;/g,'"'));
+    var Label = JSON.parse(jsonlabel.replace(/&quot;/g,'"'));
+    var Color = JSON.parse(jsoncolor.replace(/&quot;/g,'"'));
+
+    function CreateCard(){
+    
+        for(var i = 0; i < Count.length; i++){
+        
+            var card = document.createElement("div");
+            var row = document.createElement("div");
+
+            var label = document.createElement("div");
+            var value = document.createElement("div");
+
+            card.className = "card col mx-1 justify-content-center";
+            card.style = "border-left:6px solid " + Color[i] + "; box-shadow: 3px 0px 10px rgb(0 0 0 / 0.2);border-radius: 10px;";
+            card.id = "DBoard" + i;
+            card.setAttribute("name","CardCount");
+
+
+            row.className = "row";
+            row.id = "row " + i;
+
+            label.className = "col float-start";
+            label.style = "margin-left:25px;";
+            label.textContent = Label[i];
+
+            value.className = "col float-end text-center";
+            value.textContent = Count[i];
+
+            document.getElementById("Card").appendChild(card);
+
+            document.getElementById("DBoard" + i).appendChild(row);
+
+            document.getElementById("row " + i).appendChild(label);
+            document.getElementById("row " + i).appendChild(value);
+            
+        }
+
+    
+    }
+
+
+
+const ctx = document.getElementById('BarChart');
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: Label,
+        datasets: [{
+            label: false,
+            data: Count,
+            backgroundColor: Color,
+            borderColor: Color,
+            borderWidth: 1
+        }]
+    },
+    options: {
+
+        maintainAspectRatio : false,
+        responsive: true,
+
+        plugins: {
+            title: {
+                display: true,
+                text: 'Overview'
+            },
+
+            legend:{
+            
+                display:false
+            
+            }
+
+        },
+
+        scales: {
+            x: {
+            grid: {
+                display: false,
+          
+            }
+        },
+        y: {
+            grid: {
+                display: false,
+          
+            }
+        },
+        }
+
+    }
+});
+
+const ctx2 = document.getElementById('PieChart');
+const myChart2 = new Chart(ctx2, {
+    type: 'pie',
+    data: {
+        labels: Label,
+        datasets: [{
+            label: "Overview",
+            data: Count,
+            backgroundColor: Color,
+            borderColor: Color,
+            borderWidth: 1
+        }]
+    },
+    options: {
+
+        maintainAspectRatio : false,
+        responsive: true,
+
+    }
+}); 
+
+
+
+
+</script>
+
+<script>
+
+    if((@HttpContextAccessor.HttpContext.Session.GetString("DeptID") != "1003") && (@HttpContextAccessor.HttpContext.Session.GetString("DeptID") != "1")){
+    
+        var e = document.getElementById('DBoard0');
+    
+        document.addEventListener('click', function(e){
+        
+            if(e.target.id == "DBoard0"){
+
+            window.location.href = '@Url.Action("StatusPage", "HomePage")?StatusID=' + 2;
+
+        
+            }
+    
+        });
+
+        var e = document.getElementById('DBoard1');
+    
+        document.addEventListener('click', function(e){
+        
+            if(e.target.id == "DBoard1"){
+
+            window.location.href = '@Url.Action("StatusPage", "HomePage")?StatusID=' + 3;
+
+        
+            }
+    
+        });
+        
+    }else{
+    
+        var e = document.getElementById('DBoard0');
+    
+    document.addEventListener('click', function(e){
+        
+            if(e.target.id == "DBoard0"){
+
+            window.location.href = '@Url.Action("StatusPage", "HomePage")?StatusID=' + 0;
+
+        
+        }
+    
+    });
+
+    var e = document.getElementById('DBoard1');
+    
+    document.addEventListener('click', function(e){
+        
+            if(e.target.id == "DBoard1"){
+
+             window.location.href = '@Url.Action("StatusPage", "HomePage")?StatusID=' + 1;
+
+        
+        }
+    
+    });
+
+    var e = document.getElementById('DBoard2');
+    
+    document.addEventListener('click', function(e){
+        
+            if(e.target.id == "DBoard2"){
+
+            window.location.href = '@Url.Action("StatusPage", "HomePage")?StatusID=' + 2;
+
+        
+        }
+    
+    });
+
+    var e = document.getElementById('DBoard3');
+    
+    document.addEventListener('click', function(e){
+        
+            if(e.target.id == "DBoard3"){
+
+            window.location.href = '@Url.Action("StatusPage", "HomePage")?StatusID=' + 3;
+
+        
+        }
+    
+    });
+    
+    }
+
+
+    
+
+</script>
+
+
+</body>

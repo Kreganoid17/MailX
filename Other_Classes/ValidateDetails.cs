@@ -30,7 +30,7 @@ namespace Mail_X.Other_Classes
                 {
 
 
-                    if (Password == reader.GetString(4))
+                    if (Password == reader.GetString(5))
                     {
 
                         IsValid = true;

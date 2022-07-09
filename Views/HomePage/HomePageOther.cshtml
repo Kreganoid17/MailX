@@ -17,8 +17,13 @@
 
 </div>
 
+<div>
 
-<body >
+    @Html.Partial("_DashboardNavBar")
+
+</div>
+
+<body class = "main">
 
     
 
@@ -71,12 +76,17 @@
 
                             <div style = "flex:1;">
 
-                                @using (@Html.BeginForm("SignOff","HomePage", new { id = @item.FormID}))
-                                {
+                                @if((HttpContextAccessor.HttpContext.Session.GetString("DeptID") != "1003") && (HttpContextAccessor.HttpContext.Session.GetString("IsLeader") != "1")){
+                    
+                                    @using (@Html.BeginForm("SignOff","HomePage", new { id = @item.FormID}))
+                                    {
                                     
-                                    <button type = "submit" class = "fa fa-pencil" style = "border:0;background-color:#ffffff;"></button>
+                                        <button type = "submit" class = "fa fa-pencil" style = "border:0;background-color:#ffffff;"></button>
+
+                                    }
 
                                 }
+                                
                             </div>
 
                             <div style = "flex:1;">

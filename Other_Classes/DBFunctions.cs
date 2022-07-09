@@ -23,11 +23,11 @@ namespace Mail_X.Other_Classes
                 cmd.Parameters.AddWithValue("@FormID", SqlDbType.Int);
                 cmd.Parameters["@FormID"].Value = ID;
 
-                cmd.Parameters.AddWithValue("@FormNameSurname", SO.SignName);
                 cmd.Parameters.AddWithValue("@Date", DateTime.Now);
                 cmd.Parameters.AddWithValue("@Comment", SO.Comments);
                 cmd.Parameters.AddWithValue("@DeptName", SO.DeptName);
-
+                cmd.Parameters.AddWithValue("@Employee", SO.SignName);
+                cmd.Parameters.AddWithValue("@EmployeeID", SO.EmpID);
 
 
                 con.OpenDB();
@@ -68,18 +68,32 @@ namespace Mail_X.Other_Classes
                         HP.FormID = reader.GetInt32(0);
                         HP.FormName = reader.GetString(1);
                         HP.FDate = reader.GetDateTime(2);
+                        HP.PName = reader.GetString(4);
+                        HP.PID = reader.GetString(5);
 
                     if (reader.GetString(3) == "1") {
 
-                        HP.Status = "Deployed";
+                        HP.Status = "Rejected";
 
                     } else if (reader.GetString(3) == "0") {
 
-                        HP.Status = "In Progress";
+                        HP.Status = "Pending Approval";
 
-                    }    
+                    }
+                    else if (reader.GetString(3) == "2")
+                    {
 
-                        ResultData.Add(HP);
+                        HP.Status = "To Be Deployed";
+
+                    }
+                    else if (reader.GetString(3) == "3")
+                    {
+
+                        HP.Status = "Deployed To " + reader.GetString(6);
+
+                    }
+
+                    ResultData.Add(HP);
                     }
 
                 con.CloseDB();
@@ -99,36 +113,33 @@ namespace Mail_X.Other_Classes
         
         }
 
-        public List<string> GetDeptName() {
+        public int GetRecentAdded() {
 
             Connection con = new Connection();
 
-            SqlCommand cmd = new SqlCommand("dbo.GetDept", con.con);
+            SqlCommand cmd = new("dbo.FetchIDForm", con.con);
 
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            SqlDataReader reader;
+            int id = 0;
 
             try
             {
-
                 con.OpenDB();
 
-                reader = cmd.ExecuteReader();
-
-                List<string> DeptName = new List<string>();
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read()) { 
                 
-                    
-                    DeptName.Add(reader.GetString(0));
+                    id = reader.GetInt32(0);
                 
                 }
 
-                return DeptName;
+                con.CloseDB();
+
+                return id;
 
             }
-            catch (Exception ex) {
+            catch(Exception ex) {
 
                 con.CloseDB();
                 throw ex;
@@ -175,6 +186,11 @@ namespace Mail_X.Other_Classes
                         FD.AppName = reader.GetString(5);
                         FD.ServerName = reader.GetString(6);
                         FD.AdditionalNotes = reader.GetString(7);
+                        FD.ProjectName = reader.GetString(9);
+                        FD.ProjectID = reader.GetString(10);
+                        FD.PullRequests = reader.GetString(11);
+                        FD.Environment = reader.GetString(12);
+                        FD.Comments = reader.GetString(13);
 
                     }
 
@@ -192,10 +208,11 @@ namespace Mail_X.Other_Classes
 
                         SignOff Signoff = new SignOff();
 
-                        Signoff.SignName = reader2.GetString(2);
-                        Signoff.SignDate = reader2.GetDateTime(4);
-                        Signoff.Comments = reader2.GetString(5);
-                        Signoff.DeptName = reader2.GetString(6);
+                        Signoff.SignName = reader2.GetString(5);
+                        Signoff.SignDate = reader2.GetDateTime(2);
+                        Signoff.Comments = reader2.GetString(3);
+                        Signoff.DeptName = reader2.GetString(4);
+                        Signoff.EmpID = reader2.GetString(6);
 
                         SO.Add(Signoff);
 
@@ -248,6 +265,7 @@ namespace Mail_X.Other_Classes
                 cmd.Parameters.AddWithValue("@ProjectID", FD.ProjectID);
                 cmd.Parameters.AddWithValue("@PullRequest", FD.PullRequests);
                 cmd.Parameters.AddWithValue("@Environment", FD.Environment);
+                cmd.Parameters.AddWithValue("@Comments", FD.Comments);
 
                 con.OpenDB();
                 cmd.ExecuteNonQuery();
@@ -348,6 +366,11 @@ namespace Mail_X.Other_Classes
                 cmd.Parameters.AddWithValue("@AppName", FD.AppName);
                 cmd.Parameters.AddWithValue("@ServerName", FD.ServerName);
                 cmd.Parameters.AddWithValue("@AddNotes", FD.AdditionalNotes);
+                cmd.Parameters.AddWithValue("@ProjectID", FD.ProjectID);
+                cmd.Parameters.AddWithValue("@ProjectName", FD.ProjectName);
+                cmd.Parameters.AddWithValue("@Pullrequest", FD.PullRequests);
+                cmd.Parameters.AddWithValue("@Comments", FD.Comments);
+
 
                 con.OpenDB();
                 cmd.ExecuteNonQuery();
@@ -413,7 +436,7 @@ namespace Mail_X.Other_Classes
 
         }
 
-        public void SetStatus(int ID) {
+        public void SetStatus(int ID, int StatusID) {
 
             Connection con = new Connection();
 
@@ -427,7 +450,9 @@ namespace Mail_X.Other_Classes
                 con.OpenDB();
 
                 cmd.Parameters.Add("@ID", SqlDbType.Int);
+                cmd.Parameters.Add("@StatusID", SqlDbType.Int);
                 cmd.Parameters["@ID"].Value = ID;
+                cmd.Parameters["@StatusID"].Value = StatusID;
 
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -446,12 +471,159 @@ namespace Mail_X.Other_Classes
 
         }
 
-        public void AddApproval()
+        public List<HomePage> GetHomePageByStatus(int StatusID)
         {
+
+            Connection con = new Connection();
+
+            SqlCommand cmd = new("dbo.GetStatus", con.con);
+
+            List<HomePage> ResultData = new List<HomePage>();
+
+            try
+            {
+
+                con.OpenDB();
+
+                cmd.Parameters.Add("@StatusID", SqlDbType.Int);
+                cmd.Parameters["@StatusID"].Value = StatusID;
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = cmd.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+
+                    HomePage HP = new HomePage();
+
+                    HP.FormID = reader.GetInt32(0);
+                    HP.FormName = reader.GetString(1);
+                    HP.FDate = reader.GetDateTime(2);
+                    HP.PName = reader.GetString(5);
+                    HP.PID = reader.GetString(10);
+
+                    if (reader.GetString(8) == "1")
+                    {
+
+                        HP.Status = "Rejected";
+
+                    }
+                    else if (reader.GetString(8) == "0")
+                    {
+
+                        HP.Status = "Pending Approval";
+
+                    }
+                    else if (reader.GetString(8) == "2")
+                    {
+
+                        HP.Status = "To Be Deployed";
+
+                    }
+                    else if (reader.GetString(8) == "3")
+                    {
+
+                        HP.Status = "Deployed To " + reader.GetString(12);
+
+                    }
+
+                    ResultData.Add(HP);
+                }
+
+                con.CloseDB();
+
+                return ResultData;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                con.CloseDB();
+                throw ex;
+
+            }
 
 
 
         }
+
+        public Dashboard GetDashboardData(string DeptID) {
+
+            Connection con = new Connection();
+
+            SqlCommand cmd = new SqlCommand("dbo.GetDashBoardData", con.con);
+
+            List<int> values = new List<int>();
+
+            Dashboard dashboard = new Dashboard();
+
+            try
+            {
+
+                con.OpenDB();
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while(reader.Read()) {
+
+
+                    if (DeptID == "1")
+                    {
+
+                        values.Add(reader.GetInt32(0));
+                        values.Add(reader.GetInt32(1));
+                        values.Add(reader.GetInt32(2));
+                        values.Add(reader.GetInt32(3));
+
+                        dashboard.StatusCount = values;
+                        dashboard.StatusLabel = new string[4] { "Pending Approval", "Rejected", "To Be Deployed", "Deployed" };
+                        dashboard.Color = new string[4] { "rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)" };
+
+                    }
+                    else if (DeptID == "1003")
+                    {
+
+                        values.Add(reader.GetInt32(0));
+                        values.Add(reader.GetInt32(1));
+
+                        dashboard.StatusCount = values;
+                        dashboard.StatusLabel = new string[2] { "Pending Approval", "Rejected" };
+                        dashboard.Color = new string[2] { "rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"};
+
+                    }
+                    else  {
+
+                        values.Add(reader.GetInt32(2));
+                        values.Add(reader.GetInt32(3));
+
+                        dashboard.StatusCount = values;
+                        dashboard.StatusLabel = new string[2] { "To Be Deployed", "Deployed" };
+                        dashboard.Color = new string[2] {"rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)" };
+
+
+                    }
+
+                }
+
+                con.CloseDB();
+
+                return dashboard;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                con.CloseDB();
+                throw ex;
+
+            }
+
+        }
+
 
     }
 

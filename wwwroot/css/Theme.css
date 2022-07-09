@@ -8,6 +8,11 @@ th {
     color: #ffffff;
 }
 
+    th:hover {
+        cursor: pointer;
+        background-color: cornflowerblue;
+    }
+
 th,
 td {
     width: 150px;
@@ -53,10 +58,88 @@ td {
 body {
     background-color: #D3E3FC;
     font-family: Arial;
-    font-size: 17px;
+    font-size: 15px;
 }
 
 #Finput {
     border:1px solid black;
     border-radius:5px;
 }
+
+div[name=CardCount]:hover {
+
+    cursor:pointer;
+    background-color:whitesmoke;
+
+}
+
+.sidenav {
+    height: 100%;
+    width: 70px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #73a9ff;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+        .sidenav a {
+            font-size: 18px;
+        }
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #ffffff;
+    display: block;
+}
+
+.sidenav a:hover {
+    background-color:cornflowerblue;
+}
+
+.main {
+    margin-left: 10px;
+    padding: 0px 10px;
+}
+
+#link {
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 20px;
+}
+
+#link:hover {
+
+     cursor: pointer;
+}
+
+#logout:hover {
+
+    cursor:pointer;
+
+}
+
+#logout {
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 20px;
+    position:absolute;
+    width:70px;
+    bottom: 0px;
+    
+}
+
+    
+
+

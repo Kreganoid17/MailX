@@ -17,8 +17,14 @@
 
 </div>
 
+<div>
 
-<body>
+    @Html.Partial("_DashboardNavBar")
+
+</div>
+
+
+<body class = "main">
 
     <div class = "float-start">
 
@@ -88,7 +94,7 @@
 
                                      <div style = "flex:1;">
 
-                                         <button type = "submit" class = "fa fa-trash" style = "border:0; background-color:#ffffff; color:#EF5A5A;" data-bs-toggle = "modal" data-bs-target="#confirmModal" onclick = "ShowModal(@item.FormID)"></button>
+                                         <button type = "submit" class = "fa fa-trash" style = "border:0; background-color:#ffffff; color:#EF5A5A;" data-bs-toggle = "modal" data-bs-target="#confirmModal" onclick = "ShowModal(@item.FormID, @item.PID)"></button>
 
                                      </div>
                       
@@ -116,11 +122,6 @@
 
     </div>
 
-    
-
-
-
-
 </body>
 
 
@@ -144,15 +145,13 @@
 
 
 
-
-
     <script type = "text/javascript">
     
         var DeleteID;
 
-        function ShowModal(ID){
+        function ShowModal(ID, PID){
 
-            document.getElementById("modal_body").innerHTML = "are you sure you want to delete record with Deploy ID:" + ID;
+            document.getElementById("modal_body").innerHTML = "Are you sure you want to delete record with Project ID:" + PID.toString() + "?";
 
             DeleteID = ID;
 
@@ -237,6 +236,8 @@
   }
 }
 
+
+
 </script>
 
 @if(TempData["Message"] != null){
@@ -247,4 +248,4 @@
 
                 </script>
 
-            } 
+            }

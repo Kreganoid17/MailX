@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Theme.css">
+
+
+<div id="mySidenav" class="sidenav text-center" style = "margin-left:-13px;">
+  <a onclick="location.href='@Url.Action("ReturnHome", "HomePage")'" id = "link" ><i class='fa fa-tasks'></i></a>
+  <a onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" id = "link" ><i class = "fa fa-dashboard"></i></a>
+  <a onclick="location.href='@Url.Action("LogOut", "Login")'" id = "logout"><i class="fa fa-sign-out"></i></a>
+</div>

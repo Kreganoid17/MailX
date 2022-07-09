@@ -20,6 +20,7 @@
     <PackageReference Include="Bootstrap.Datepicker" Version="1.8.0.1" />
     <PackageReference Include="Bootstrap.Less" Version="3.4.1" />
     <PackageReference Include="Bootstrap3Modal" Version="1.0.0" />
+    <PackageReference Include="Chart.js" Version="3.7.1" />
     <PackageReference Include="ChilkatNativeLib" Version="9.5.0.90" />
     <PackageReference Include="DatePicker.HTMLHelper" Version="1.2.2.1" />
     <PackageReference Include="EASendMail" Version="7.8.0.7" />

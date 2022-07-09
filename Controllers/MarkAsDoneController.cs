@@ -31,7 +31,7 @@ namespace Mail_X.Controllers
 
                         List<HomePage> HP = new List<HomePage>();
 
-                        DBF.SetStatus(ID);
+                        DBF.SetStatus(ID,3);
 
                         HP = DBF.FetchAll();
 

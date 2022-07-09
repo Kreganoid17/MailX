@@ -35,7 +35,18 @@ namespace Mail_X.Controllers
 
                     List<HomePage> HP = new List<HomePage>();
 
+                    SignOff SO = new SignOff();
+
+                    SO.SignName = HttpContext.Session.GetString("Username");
+                    SO.Comments = FD.Comments;
+                    SO.DeptName = HttpContext.Session.GetString("DeptName");
+                    SO.EmpID = HttpContext.Session.GetString("ID");
+
                     DBF.AddForm(FD);
+
+                    int ID = DBF.GetRecentAdded();
+
+                    DBF.AddSignOff(ID,SO);
 
                     HP = DBF.FetchAll();
 
@@ -72,6 +83,8 @@ namespace Mail_X.Controllers
             {
                 ModelState.Remove("SignOffs");
 
+                ModelState.Remove("Environment");
+
                 if (ModelState.IsValid)
                 {
                     
@@ -84,7 +97,7 @@ namespace Mail_X.Controllers
 
                     HP = DBF.FetchAll();
 
-                    TempData["Message"] = "Form Created Successfuly";
+                    TempData["Message"] = "Form Updated Successfuly";
 
                     return RedirectToAction("ReturnHome", "HomePage", HP);
 
@@ -125,7 +138,7 @@ namespace Mail_X.Controllers
 
                     HP = DBF.FetchAll();
 
-                    TempData["Message"] = "Sign Off Successfuly Added!";
+                    TempData["Message"] = "Approval Successfuly Added!";
 
                     return View(Home, HP);
 
@@ -146,5 +159,40 @@ namespace Mail_X.Controllers
             return View("~/Views/SignOff/SignOff.cshtml");
 
         }
+
+        public ActionResult Reject(int ID) {
+
+            DBFunctions DBF = new DBFunctions();
+
+            DBF.SetStatus(ID,1);
+
+            TempData["Message"] = "Rejection Successfully";
+
+            return RedirectToAction("ReturnHome","HomePage");
+        
+        }
+
+        public ActionResult Accept(int ID,string comment)
+        {
+
+            SignOff SO = new SignOff();
+
+            SO.SignName = HttpContext.Session.GetString("Username");
+            SO.Comments = comment;
+            SO.DeptName = HttpContext.Session.GetString("DeptName");
+            SO.EmpID = HttpContext.Session.GetString("ID");
+
+            DBFunctions DBF = new DBFunctions();
+
+            DBF.AddSignOff(ID,SO);
+
+            DBF.SetStatus(ID, 2);
+
+            TempData["Message"] = "Approved Successfully";
+
+            return RedirectToAction("ReturnHome", "HomePage");
+
+        }
+
     }
 }

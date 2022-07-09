@@ -5,14 +5,19 @@
 <div class = "col-4 float-end mt-2">
 
         
-        <h2>Software Release To Live</h2>
+        <h2>Software Release To Deployment</h2>
 
     </div>
 
     
     <div class = "d-flex align-items-start justify-content-start mt-2 col-2">
 
-    <img src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:170px; height:90px; margin-left:-15px">
+        @using (@Html.BeginForm("ReturnToHome","Send"))
+        {
+                                    
+           <input type="image" src="~/img/MAIL_X_LOGO.png" class = "img-fluid" style = "width:170px; height:90px; margin-left:-15px">
+
+        }
 
     </div>
 
@@ -50,7 +55,7 @@
         <div>
 
             <label>Deploy Start Date:</label>
-            @Html.TextBoxFor(Model => Model.StartDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:73px; height:30px;", @id = "Finput"})
+            @Html.TextBoxFor(Model => Model.StartDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:78px; height:30px;", @id = "Finput"})
             @Html.ValidationMessageFor(Model => Model.StartDate, "", new {@class = "text-danger"})
 
         </div>
@@ -60,7 +65,7 @@
         <div>
 
             <label>Deploy End Date:</label>
-            @Html.TextBoxFor(Model => Model.EndDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:79px; height:30px;", @id = "Finput"})
+            @Html.TextBoxFor(Model => Model.EndDate, new {@type = "datetime-local", @class = "w-25", style = "margin-left:83px; height:30px;", @id = "Finput"})
             @Html.ValidationMessageFor(Model => Model.EndDate, "", new {@class = "text-danger"})
 
         </div>
@@ -70,7 +75,7 @@
         <div>
 
             <label>Application Name:</label>
-            @Html.TextBoxFor(Model => Model.AppName, new {@class = "w-25", @style = "margin-left:75px;", @id = "Finput"})
+            @Html.TextBoxFor(Model => Model.AppName, new {@class = "w-25", @style = "margin-left:78px;", @id = "Finput"})
             @Html.ValidationMessageFor(Model => Model.AppName, "", new {@class = "text-danger"})
 
         </div>
@@ -87,7 +92,7 @@
         <div>
 
             <label>DNS Name:</label>
-            @Html.TextBoxFor(Model => Model.ServerName, new {@class = "w-25", @style = "margin-left:123px;", @id = "Finput"})
+            @Html.TextBoxFor(Model => Model.ServerName, new {@class = "w-25", @style = "margin-left:118px;", @id = "Finput"})
             @Html.ValidationMessageFor(Model => Model.ServerName, "", new {@class = "text-danger"})
 
         </div>
@@ -115,7 +120,7 @@
 
         <div class = "pt-3">
 
-            <label>Additional Notes:</label>
+            <label>Deployment Instructions:</label>
             
 
         </div>
@@ -135,7 +140,7 @@
 
             <div>
 
-                <label>Comments:</label>
+                <label>Developer's Comments:</label>
                 @Html.TextAreaFor(Model => Model.Comments, new{@class = "w-100", rows = "4", col = "50", @id = "Finput"})
                 @Html.ValidationMessageFor(Model => Model.Comments, "", new {@class = "text-danger"})
 

@@ -16,6 +16,20 @@ namespace Mail_X.Controllers
             return View();
         }
 
+        public ActionResult StatusPage(int StatusID) {
+
+            string Home = HttpContext.Session.GetString("Home");
+
+            DBFunctions DBF = new DBFunctions();
+
+            List<HomePage> HP = new List<HomePage>();
+
+            HP = DBF.GetHomePageByStatus(StatusID);    
+            
+            return View(Home,HP);
+
+        }
+
         public ActionResult ViewDoc(int ID) { 
         
             PopulateViewDoc PVD = new PopulateViewDoc();
@@ -23,6 +37,8 @@ namespace Mail_X.Controllers
             FormDetails FD = new FormDetails();
 
             FD = PVD.Populate(ID);
+
+            ViewBag.ID = ID;
 
             return View("~/Views/ViewDoc/ViewDoc.cshtml", FD);
         
@@ -102,7 +118,13 @@ namespace Mail_X.Controllers
 
             ViewBag.ID = ID;
 
-            return View("~/Views/SignOff/SignOff.cshtml");
+            SignOff SO  = new SignOff();
+
+            SO.SignName = HttpContext.Session.GetString("Username");
+            SO.EmpID = HttpContext.Session.GetString("ID");
+            SO.DeptName = HttpContext.Session.GetString("DeptName");
+
+            return View("~/Views/SignOff/SignOff.cshtml", SO);
 
         }
 

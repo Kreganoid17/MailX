@@ -32,6 +32,7 @@ namespace Mail_X.Models
 
         public string Environment { get; set; }
 
+        [Required(ErrorMessage = "Please Enter a Comment")]
         public string Comments { get; set; }
 
     }
