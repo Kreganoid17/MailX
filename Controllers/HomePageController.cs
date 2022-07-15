@@ -4,12 +4,20 @@ using Mail_X.Other_Classes;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Http;
+using Mail_X.Controllers;
 
 namespace Mail_X.Controllers  
 {
 
     public class HomePageController : Controller
     {
+
+        public string SetProc()
+        {
+
+            return HttpContext.Session.GetString("Proc");
+
+        }
 
         public IActionResult HomePage()
         {
@@ -77,26 +85,54 @@ namespace Mail_X.Controllers
         
         }
 
-        public ActionResult MarkAsDone(int ID) {
+        public ActionResult ArchiveForm(int ID, string PID, string Pname) {
 
-            ViewBag.ID = ID;
-            return View("~/Views/MarkAsDone/MarkAsDone.cshtml" );
-        
-        }
+            History history = new History();
 
-        public ActionResult DeleteForm(int ID) {
+            history.EmpID = HttpContext.Session.GetString("ID");
+            history.EmpName = HttpContext.Session.GetString("Username");
+            history.DeptID = HttpContext.Session.GetString("DeptID");
+            history.Description = "Deleted Deployment Form with Project ID: " + PID + " and Project Name: " + Pname;
 
             DBFunctions DBF = new DBFunctions();
 
-            DBF.DeleteForm(ID);
+            DBF.ArchiveForm(ID);
+
+            DBF.AddHistory(history);
 
             List<HomePage> HP = new List<HomePage>();
 
-            HP = DBF.FetchAll();
+            HP = DBF.FetchAll(SetProc());
 
-            TempData["Message"] = "Form Deleted Successfuly!";
+            TempData["Message"] = "Form Archived Successfuly!";
 
             return RedirectToAction("ReturnHome", HP);
+
+        }
+
+        public ActionResult RestoreForm(int ID, string PID, string Pname)
+        {
+
+            History history = new History();
+
+            history.EmpID = HttpContext.Session.GetString("ID");
+            history.EmpName = HttpContext.Session.GetString("Username");
+            history.DeptID = HttpContext.Session.GetString("DeptID");
+            history.Description = "Restored Deployment Form with Project ID: " + PID + " and Project Name: " + Pname;
+
+            DBFunctions DBF = new DBFunctions();
+
+            DBF.RestoreForm(ID);
+
+            DBF.AddHistory(history);
+
+            List<HomePage> HP = new List<HomePage>();
+
+            HP = DBF.FetchAllArchive();
+
+            TempData["Message"] = "Form Restored Successfuly!";
+
+            return View("~/Views/Archive/Archive.cshtml", HP);
 
         }
 
@@ -106,7 +142,7 @@ namespace Mail_X.Controllers
 
             List<HomePage> HP = new List<HomePage>();
 
-            HP = DBF.FetchAll();
+            HP = DBF.FetchAll(SetProc());
 
             string Home = HttpContext.Session.GetString("Home");
 

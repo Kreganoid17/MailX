@@ -1,0 +1,240 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@model IEnumerable<Mail_X.Models.Activity>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Theme.css">
+
+<div>
+
+    @Html.Partial("_NavBar")
+
+</div>
+
+<div>
+
+    @Html.Partial("_DashboardNavBar")
+
+</div>
+
+
+<body class = "main">
+
+    <br></br>
+
+    <div class = "col w-100" style = "background-color:#ffffff; box-shadow: 3px 0px 10px rgb(0 0 0 / 0.2); height:500px;border-radius: 10px;" id = "scroll">
+
+    <br>
+
+        @if (Model.Count() > 0)
+        {
+
+            foreach(var item in Model){
+    
+                <div class = "card m-2 col" style = "box-shadow: 3px 0px 10px rgb(0 0 0 / 0.2);border-radius: 10px; background-color:#E2E2E2;">
+
+                    <div class = "row">
+
+                        <div class = "mt-2 col" style = "height:80px; margin-left:20px;">
+
+                            <div class = "float-start">
+
+                                Name: @item.EmpName
+
+                            </div>
+
+                        </div>
+
+                        <div class = "mt-2 col" style = "height:80px;">
+
+                            <div class = "text-center">
+
+                                EmpID: @item.EmpID
+
+                            </div>
+
+                        </div>
+
+                        <div class = "mt-2 col" style = "height:80px;">
+
+                            <div class = "text-center">
+
+                                Dept: @item.Dept
+
+                            </div>
+
+                        </div>
+
+                        <div class = "mt-2 col" style = "height:80px; margin-right:20px;">
+
+                            <div class = "float-end">
+
+                                Date: @item.DateCreated
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    
+                    <div class = "row">
+
+                        <div class = "text-center" style = "height:80px; margin-bottom:-30px; margin-top:-30px;">@item.Desc</div>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+            }
+
+        }else if(Model.Count() <= 0)
+        {
+            
+            <h2 class = "text-center">No Activities</h2>
+
+        }
+
+    
+
+</div>
+
+</body>
+
+
+<div class = "modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class = "modal-dialog">
+                <div class = "modal-content">
+                    <div class = "modal-header">
+                        <h5 class = "modal-title" id = "confirmModalLabel">Confirm</h5>
+                        <button type = "button" class = "btn-close" data-bs-dismiss = "modal" aria-label = "Close"></button>
+                    </div>
+                    <div class = "modal-body" id = "modal_body">
+         
+                    </div>
+                    <div class = "modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss = "modal">No</button>
+                        <button type="button" class="btn btn-primary"   data-bs-dismiss = "modal" onclick = "DeleteForm()">Yes</button>
+                    </div>
+                </div>
+            </div>
+       </div>
+
+
+
+    <script type = "text/javascript">
+    
+        var DeleteID;
+        var Pid;
+        var Pname;
+
+        function ShowModal(ID, PID, PName){
+
+            document.getElementById("modal_body").innerHTML = "Are you sure you want to delete record with Project ID:" + PID.toString() + "?";
+
+            DeleteID = ID;
+            Pid = PID;
+            Pname = PName;
+
+            $("#confirmModal").modal();
+     
+        }
+
+        function DeleteForm(){
+        
+            window.location.href = '@Url.Action("DeleteForm", "HomePage")?ID=' + DeleteID + '&PID=' + Pid + '&Pname=' + Pname;
+        
+        }
+    
+    </script>
+
+    <script>
+
+    var th = document.getElementsByTagName('th');
+    var asc = true;
+
+    for(let col = 0; col < th.length; col++){
+    
+        th[col].addEventListener('click',item(col));
+        
+    
+    }
+
+    function item(col){
+    
+        return function(){
+        
+            asc = !asc;
+            console.log(col + " " +asc);
+            sortTable(col,asc);
+        
+        }
+    
+    }
+
+    function sortTable(col,asc) {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("myTable");
+  switching = true;
+
+  while (switching) {
+
+    switching = false;
+    rows = table.rows;
+
+    for (i = 0; i < (rows.length - 1); i++) {
+
+      shouldSwitch = false;
+
+      x = rows[i].getElementsByTagName("TD")[col];
+      y = rows[i + 1].getElementsByTagName("TD")[col];
+
+      if(asc == true){
+
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+
+        shouldSwitch = true;
+        break;
+
+      }
+      }else if(asc == false){
+      
+      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+
+        shouldSwitch = true;
+        break;
+      }
+      
+      }
+      }
+
+    
+    if (shouldSwitch) {
+
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
+
+
+</script>
+
+@if(TempData["Message"] != null){
+                
+                <script>
+
+                    alert("@TempData["Message"]");
+
+                </script>
+
+            }

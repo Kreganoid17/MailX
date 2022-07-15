@@ -9,6 +9,13 @@ namespace Mail_X.Controllers
 {
     public class SendController : Controller
     {
+        public string SetProc()
+        {
+
+            return HttpContext.Session.GetString("Proc");
+
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -21,7 +28,7 @@ namespace Mail_X.Controllers
 
             List<HomePage> HP = new List<HomePage>();
 
-            HP = DBF.FetchAll();
+            HP = DBF.FetchAll(SetProc());
 
             ViewBag.Username = HttpContext.Session.GetString("Username");
             return RedirectToAction("ReturnHome", "HomePage", HP);
@@ -44,7 +51,7 @@ namespace Mail_X.Controllers
 
                 List<HomePage> HP = new List<HomePage>();
 
-                HP = DBF.FetchAll();
+                HP = DBF.FetchAll(SetProc());
 
                 TempData["Message"] = "Email(s) Sent Successfully";
 

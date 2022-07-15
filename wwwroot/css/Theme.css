@@ -62,8 +62,9 @@ body {
 }
 
 #Finput {
-    border:1px solid black;
-    border-radius:5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 3px 0px 10px rgb(0 0 0 / 0.2);
 }
 
 div[name=CardCount]:hover {
@@ -111,6 +112,7 @@ div[name=CardCount]:hover {
 .main {
     margin-left: 10px;
     padding: 0px 10px;
+    overflow-x:hidden;
 }
 
 #link {
@@ -138,6 +140,11 @@ div[name=CardCount]:hover {
     width:70px;
     bottom: 0px;
     
+}
+
+#scroll {
+    overflow-y: scroll;
+    overflow-x:hidden;
 }
 
     

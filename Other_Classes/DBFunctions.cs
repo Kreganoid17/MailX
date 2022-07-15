@@ -44,11 +44,144 @@ namespace Mail_X.Other_Classes
         
         }
 
-        public List<HomePage> FetchAll (){
+        public void AddHistory(History history) {
 
             Connection con = new Connection();
 
-            SqlCommand cmd = new("dbo.FetchAllForm",con.con);
+            SqlCommand cmd = new SqlCommand("dbo.AddHistory", con.con);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+
+                cmd.Parameters.AddWithValue("@EmpID", history.EmpID);
+                cmd.Parameters.AddWithValue("@EmpName", history.EmpName);
+                cmd.Parameters.AddWithValue("@DateCreated", history.DateCreated);
+                cmd.Parameters.AddWithValue("@DeptID", history.DeptID);
+                cmd.Parameters.AddWithValue("@Desc", history.Description);
+
+
+                con.OpenDB();
+                cmd.ExecuteNonQuery();
+                con.CloseDB();
+
+            }
+            catch (Exception ex)
+            {
+
+                con.CloseDB();
+                throw ex;
+
+            }
+
+        }
+
+        public List<Activity> GetAudit() {
+
+            Connection con = new Connection();
+
+            SqlCommand cmd = new("dbo.GetAudit", con.con);
+
+            List<Activity> ActivityData = new List<Activity>();
+
+            try
+            {
+
+                con.OpenDB();
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+
+                    Activity activity = new Activity();
+
+                    activity.DateCreated = reader.GetDateTime(0);
+                    activity.EmpID = reader.GetString(2);
+                    activity.EmpName = reader.GetString(3);
+                    activity.Dept = reader.GetString(4);
+                    activity.Desc = reader.GetString(1);
+
+                    ActivityData.Add(activity);
+                }
+
+                con.CloseDB();
+
+                return ActivityData;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                con.CloseDB();
+                throw ex;
+
+            }
+
+
+        }
+
+        public List<Activity> GetRecentActivity()
+        {
+
+            Connection con = new Connection();
+
+            SqlCommand cmd = new("dbo.GetRecentActivity", con.con);
+
+            List<Activity> ActivityData = new List<Activity>();
+
+            try
+            {
+
+                con.OpenDB();
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+
+                    Activity activity = new Activity();
+
+                    activity.DateCreated = reader.GetDateTime(0);
+                    activity.Desc = reader.GetString(1);
+                    activity.EmpID = reader.GetString(2);
+                    activity.EmpName = reader.GetString(3);
+                    activity.Dept = reader.GetString(4);
+
+                    ActivityData.Add(activity);
+                }
+
+                con.CloseDB();
+
+                return ActivityData;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                con.CloseDB();
+                throw ex;
+
+            }
+
+
+
+        }
+
+        public List<HomePage> FetchAll (string Proc){
+
+            Connection con = new Connection();
+
+            SqlCommand cmd = new(Proc,con.con);
 
             List<HomePage> ResultData = new List<HomePage>();
 
@@ -90,6 +223,7 @@ namespace Mail_X.Other_Classes
                     {
 
                         HP.Status = "Deployed To " + reader.GetString(6);
+                        HP.Environment = reader.GetString(6);
 
                     }
 
@@ -111,6 +245,85 @@ namespace Mail_X.Other_Classes
 
             
         
+        }
+
+        public List<HomePage> FetchAllArchive()
+        {
+
+            Connection con = new Connection();
+
+            SqlCommand cmd = new("dbo.FetchAllArchive", con.con);
+
+            List<HomePage> ResultData = new List<HomePage>();
+
+            try
+            {
+
+                cmd.Parameters.Add("@ArchiveID", SqlDbType.Int);
+                cmd.Parameters["@ArchiveID"].Value = 1;
+
+                con.OpenDB();
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = cmd.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+
+                    HomePage HP = new HomePage();
+
+                    HP.FormID = reader.GetInt32(0);
+                    HP.FormName = reader.GetString(1);
+                    HP.FDate = reader.GetDateTime(2);
+                    HP.PName = reader.GetString(4);
+                    HP.PID = reader.GetString(5);
+
+                    if (reader.GetString(3) == "1")
+                    {
+
+                        HP.Status = "Rejected";
+
+                    }
+                    else if (reader.GetString(3) == "0")
+                    {
+
+                        HP.Status = "Pending Approval";
+
+                    }
+                    else if (reader.GetString(3) == "2")
+                    {
+
+                        HP.Status = "To Be Deployed";
+
+                    }
+                    else if (reader.GetString(3) == "3")
+                    {
+
+                        HP.Status = "Deployed To " + reader.GetString(6);
+                        HP.Environment = reader.GetString(6);
+
+                    }
+
+                    ResultData.Add(HP);
+                }
+
+                con.CloseDB();
+
+                return ResultData;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                con.CloseDB();
+                throw ex;
+
+            }
+
+
+
         }
 
         public int GetRecentAdded() {
@@ -283,11 +496,11 @@ namespace Mail_X.Other_Classes
 
         }
 
-        public void DeleteForm(int ID) {
+        public void ArchiveForm(int ID) {
 
             Connection con = new Connection();
 
-            SqlCommand cmd = new SqlCommand("dbo.DeleteFormDetails", con.con);
+            SqlCommand cmd = new SqlCommand("dbo.SetArchive", con.con);
             cmd.CommandType = CommandType.StoredProcedure;
 
             try
@@ -295,8 +508,8 @@ namespace Mail_X.Other_Classes
 
                 cmd.Parameters.Add("@FormID", SqlDbType.Int);
                 cmd.Parameters["@FormID"].Value = ID;
-
-                DeleteSignOff(ID);
+                cmd.Parameters.Add("@ArchiveInt", SqlDbType.Int);
+                cmd.Parameters["@ArchiveInt"].Value = 1;
 
                 con.OpenDB();
 
@@ -315,12 +528,11 @@ namespace Mail_X.Other_Classes
 
         }
 
-        public void DeleteSignOff(int ID)
-        {
+        public void RestoreForm(int ID) {
 
             Connection con = new Connection();
 
-            SqlCommand cmd = new SqlCommand("dbo.DeleteSignOff", con.con);
+            SqlCommand cmd = new SqlCommand("dbo.SetArchive", con.con);
             cmd.CommandType = CommandType.StoredProcedure;
 
             try
@@ -328,6 +540,8 @@ namespace Mail_X.Other_Classes
 
                 cmd.Parameters.Add("@FormID", SqlDbType.Int);
                 cmd.Parameters["@FormID"].Value = ID;
+                cmd.Parameters.Add("@ArchiveInt", SqlDbType.Int);
+                cmd.Parameters["@ArchiveInt"].Value = 0;
 
                 con.OpenDB();
 
@@ -345,6 +559,7 @@ namespace Mail_X.Other_Classes
             }
 
         }
+
 
         public void UpdateForm(FormDetails FD, int ID) {
 
@@ -458,6 +673,8 @@ namespace Mail_X.Other_Classes
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 con.CloseDB();
+
+                
 
 
             }

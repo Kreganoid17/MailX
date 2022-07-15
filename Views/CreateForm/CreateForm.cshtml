@@ -6,10 +6,10 @@
 
     <link rel="stylesheet" href="/css/Theme.css">
 
-<div class = "col-4 float-end mt-2">
+<div class = "col-5 float-end">
 
         
-        <h2>Software Release To Deployment</h2>
+        <h2 style = "margin-top:45px;">Software Release To Deployment</h2>
 
     </div>
 
@@ -138,7 +138,7 @@
 
             <div>
 
-                <label>Develper's Comments:</label>
+                <label>Developer's Comments:</label>
                 @Html.TextAreaFor(Model => Model.Comments, new{@class = "w-100", rows = "4", col = "50", @id = "Finput"})
                 @Html.ValidationMessageFor(Model => Model.Comments, "", new {@class = "text-danger"})
 
@@ -153,7 +153,7 @@
 @using (@Html.BeginForm("ReturnToHome","Send"))
         {
                                     
-            <button class="btn btn-primary float-start" style = "background-color: #73a9ff; border-color:#73a9ff;">Back</button>
+            <button class="btn btn-primary float-end mx-2" style = "background-color: #73a9ff; border-color:#73a9ff;">Back</button>
 
         }
 

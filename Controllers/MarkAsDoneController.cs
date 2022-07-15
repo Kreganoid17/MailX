@@ -6,50 +6,55 @@ namespace Mail_X.Controllers
 {
     public class MarkAsDoneController : Controller
     {
+        public string SetProc()
+        {
+
+            return HttpContext.Session.GetString("Proc");
+
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public ActionResult ValidateDetailsDevOps(MarkAsDoneDetails MD, int ID) {
+        public ActionResult ValidateDetailsDevOps(int FormID, string ID, string Password) {
+
+            DBFunctions DBF = new DBFunctions();
+
+            List<HomePage> HP = new List<HomePage>();
+
+            HP = DBF.FetchAll(SetProc());
+
+            string Home = HttpContext.Session.GetString("Home");
 
             try
             {
 
-                if (ModelState.IsValid)
-                {
+                byte[] data = System.Convert.FromBase64String(Password);
+
+                string DecodedPassword = System.Text.ASCIIEncoding.ASCII.GetString(data);
+
+                ValidateDetails VD = new ValidateDetails();
+
+                    VD.DetailsValid(ID, Password);
 
 
-                    ValidateDetails VD = new ValidateDetails();
-
-                    VD.DetailsValid(MD.DevOpsID, MD.Password);
-
-                    if (VD.DetailsValid(MD.DevOpsID, MD.Password) == true)
+                    if (VD.DetailsValid(ID, DecodedPassword) == true)
                     {
 
-                        DBFunctions DBF = new DBFunctions();
+                        DBF.SetStatus(FormID,3);
 
-                        List<HomePage> HP = new List<HomePage>();
 
-                        DBF.SetStatus(ID,3);
-
-                        HP = DBF.FetchAll();
-
-                        return View("~/Views/HomePage/HomePageDevOps.cshtml", HP);
-
-                    }
-                    else
-                    {
-
-                        ViewBag.Message = String.Format("Invalid Details Entered");
-                        return View("~/Views/MarkAsDone/MarkAsDone.cshtml");
+                        TempData["Message"] = String.Format("Successfuly Marked As Done");
+                        return View(Home, HP);
 
                     }
 
-                }
                 else {
 
-                    ViewBag.Message = String.Format("Invalid Details Entered");
+                    TempData["Message"] = String.Format("Invalid Password Entered");
+                    return View(Home, HP);
 
                 }
 
@@ -57,11 +62,12 @@ namespace Mail_X.Controllers
             catch (Exception ex) {
 
                 throw ex;
-            
+                return View(Home, HP);
+
             }
 
-            return View("~/Views/MarkAsDone/MarkAsDone.cshtml");
-        
+            
+
         }
     }
 }

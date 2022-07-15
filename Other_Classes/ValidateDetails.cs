@@ -82,12 +82,8 @@ namespace Mail_X.Other_Classes
 
                     if (password == reader.GetString(2))
                     {
-
-                        if (reader.GetInt32(3) == 1) {
-
+                   
                             IsValid = true;
-
-                        }
 
                     }
                     else

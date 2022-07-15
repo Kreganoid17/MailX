@@ -1,11 +1,16 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
 
 @model IEnumerable<Mail_X.Models.HomePage>
 
-<link rel="stylesheet" href="/css/Theme.css">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="/css/Theme.css">
 
 <div>
 
@@ -19,13 +24,16 @@
 
 </div>
 
+
 <body class = "main">
 
- 
-    <div class = "mt-4">
+    
+
+    <div class = "mt-4" >
 
         <table class="text-center w-100">
-            <thead class="thead-dark" style = "background-color:lightblue">
+
+            <thead class="thead-dark">
                 <tr>
                     <th scope="col" style = "display:none;">Deploy ID</th>
                     <th scope="col" style = "border-top-left-radius:10px; border-bottom-left-radius:10px;">Project ID</th>
@@ -36,9 +44,10 @@
                     <th scope="col">Properties</th>
                </tr>
            </thead>
+
         </table>
 
-        <table class="text-center w-100" id = "myTable">
+        <table class="text-center w-100" id = "myTable" >
             
             <tbody>
                
@@ -61,63 +70,34 @@
                                 @using (@Html.BeginForm("ViewDoc","HomePage", new {id = @item.FormID}))
                                 {
                                     
-                                    <button type = "submit" class = "fa fa-eye" style = "border:0;background-color:#ffffff;color:#0D6EFD;"></button>
+                                    <button type = "submit" class = "fa fa-eye" style = "border:0; background-color:#ffffff; color:#0D6EFD;"></button>
 
                                 }
 
                             </div>
-
-                            @if(HttpContextAccessor.HttpContext.Session.GetString("DeptID") != "2"){
-                    
-                                        <div style = "flex:1;">
-
-                                        @using (Html.BeginForm("SignOff","HomePage", new { id = @item.FormID}))
-                                        {
-                                    
-                                            <button type = "submit" class = "fa fa-pencil" style = "border:0;background-color:#ffffff;"></button>
-
-                                        }
-
-                                        </div>
-
-                                }
-
-                                @if (@item.Status != "Deployed To " + @item.Environment)
-                                {
-
-
-
 
                                     <div style = "flex:1;">
 
-
-
-                                        <button type = "submit" class = "fa fa-check" style = "border:0; background-color:#ffffff; color:#82954B;" data-bs-toggle = "modal" data-bs-target="#confirmModal" onclick = "ShowModal(@item.FormID)"></button>
-
-
-                                    </div>
-
-
-
-                                }else{
-                                
-                                <div style = "flex:1;">
-
-                                </div>
-                                
-                                }
-
-
-                            <div style = "flex:1;">
-
-                                @using (@Html.BeginForm("Send","HomePage", new { ID= @item.FormID, FormName = @item.FormName}))
-                                {
+                                    @using (@Html.BeginForm("UpdateDoc","HomePage", new { id = @item.FormID}))
+                                    {
                                     
-                                    <button type = "submit" class = "fa fa-paper-plane" style = "border:0; background-color:#ffffff; color:#82954B;"></button>
+                                        <button type = "submit" class = "fa fa-edit" style = "border:0; background-color:#ffffff;"></button>
 
-                                }
+                                     }
 
-                            </div>
+                                     </div>
+
+
+                                     <div style = "flex:1;">
+
+                                         @using (@Html.BeginForm("RestoreForm","HomePage", new { id = @item.FormID, PID = @item.PID, Pname= @item.PName}))
+                                        {
+
+                                            <button type = "submit" class = "fa fa-undo" style = "border:0; background-color:#ffffff; color:#82954B;"></button>
+                                         
+                                        }
+                                     </div>
+                     
 
                             </div>
                                 
@@ -132,58 +112,56 @@
 
     </div>
 
-    @*<h1>this will be the home page..... (under construction)</h1>*@
+</body>
 
 
 <div class = "modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
             <div class = "modal-dialog">
                 <div class = "modal-content">
                     <div class = "modal-header">
-                        <h5 class = "modal-title" id = "confirmModalLabel">Mark As Done</h5>
+                        <h5 class = "modal-title" id = "confirmModalLabel">Confirm</h5>
                         <button type = "button" class = "btn-close" data-bs-dismiss = "modal" aria-label = "Close"></button>
                     </div>
                     <div class = "modal-body" id = "modal_body">
-                        <p>Please Enter Password</p>
-                        <input type = "password" style = "width:100%;" id = "password">
+         
                     </div>
                     <div class = "modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss = "modal">Cancel</button>
-                        <button type="button" class="btn btn-primary"   data-bs-dismiss = "modal" onclick = "MAD('@HttpContextAccessor.HttpContext.Session.GetString("ID")')">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss = "modal">No</button>
+                        <button type="button" class="btn btn-primary"   data-bs-dismiss = "modal" onclick = "DeleteForm()">Yes</button>
                     </div>
                 </div>
             </div>
        </div>
 
-</body>
 
 
     <script type = "text/javascript">
     
-        var FormID;
-        var password;
+        var DeleteID;
+        var Pid;
+        var Pname;
 
-        function ShowModal(ID){
+        function ShowModal(ID, PID, PName){
 
-            FormID = ID;
+            document.getElementById("modal_body").innerHTML = "Are you sure you want to archive record with Project ID:" + PID.toString() + "?";
+
+            DeleteID = ID;
+            Pid = PID;
+            Pname = PName;
 
             $("#confirmModal").modal();
-
-        
+     
         }
 
-        function MAD(EmpID){
+        function DeleteForm(){
         
-            var pword = document.getElementById("password").value;
-
-            password = pword.toString();
-
-            window.location.href = '@Url.Action("ValidateDetailsDevOps", "MarkAsDone")?FormID=' + parseInt(FormID) + '&ID=' + EmpID.toString() + '&Password=' + window.btoa(password);
-
+            window.location.href = '@Url.Action("ArchiveForm", "HomePage")?ID=' + DeleteID + '&PID=' + Pid + '&Pname=' + Pname;
+        
         }
     
     </script>
 
-   <script>
+    <script>
 
     var th = document.getElementsByTagName('th');
     var asc = true;
@@ -252,8 +230,9 @@
   }
 }
 
-</script>
 
+
+</script>
 
 <div class = "modal fade" id="Popup" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
             <div class = "modal-dialog">

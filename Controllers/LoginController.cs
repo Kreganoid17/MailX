@@ -16,7 +16,7 @@ namespace Mail_X.Controllers
 
         }
 
-        private void SetUser(UserDetails userDetails, string Home) {
+        private void SetUser(UserDetails userDetails, string Home, string Proc) {
 
             HttpContext.Session.SetString("ID", userDetails.EmpID);
             HttpContext.Session.SetString("Username", userDetails.UserName);
@@ -26,7 +26,7 @@ namespace Mail_X.Controllers
             HttpContext.Session.SetString("EPassword", userDetails.EmailPassword);
             HttpContext.Session.SetString("IsLeader", userDetails.IsLeader.ToString());
             HttpContext.Session.SetString("Home", Home);
-            
+            HttpContext.Session.SetString("Proc", Proc);
 
         } 
 
@@ -50,37 +50,40 @@ namespace Mail_X.Controllers
 
                         DBFunctions DBF = new DBFunctions();
 
-                        List<HomePage> HP = new List<HomePage>();
-
                         UserDetails userDetails = new UserDetails();
 
                         userDetails = LV.GetUserDetails(EmpID);
 
-                        HP = DBF.FetchAll();
-
                         if (userDetails.DeptID == 1)
                         {
 
-                            SetUser(userDetails, "~/Views/HomePage/HomePageDev.cshtml");
+                            SetUser(userDetails, "~/Views/HomePage/HomePageDev.cshtml", "dbo.FetchAllFormDev");
 
-                            return RedirectToAction("Dashboard","Dashboard");
+                            return RedirectToAction("Dashboard", "Dashboard");
 
                         }
                         else if (userDetails.DeptID == 2)
                         {
 
-                            SetUser(userDetails, "~/Views/HomePage/HomePageDevOps.cshtml");
+                            SetUser(userDetails, "~/Views/HomePage/HomePageDevOps.cshtml", "dbo.FetchAllFormDevOps");
 
                             return RedirectToAction("Dashboard", "Dashboard");
 
                         }
-                        else
+                        else if (userDetails.DeptID == 1003)
                         {
 
-                            SetUser(userDetails, "~/Views/HomePage/HomePageOther.cshtml");
+                            SetUser(userDetails, "~/Views/HomePage/HomePageOther.cshtml", "dbo.FetchAllFormTechLead");
 
                             return RedirectToAction("Dashboard", "Dashboard");
 
+
+                        }
+                        else {
+
+                            SetUser(userDetails, "~/Views/HomePage/HomePageOther.cshtml", "dbo.FetchAllFormDevOps");
+
+                            return RedirectToAction("Dashboard", "Dashboard");
 
                         }
 

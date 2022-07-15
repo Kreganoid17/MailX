@@ -19,14 +19,44 @@ namespace Mail_X.Controllers
 
             Dashboard dashboard = new Dashboard();
 
+            List<Activity> activity = new List<Activity>();
+
             dashboard = DBF.GetDashboardData(HttpContext.Session.GetString("DeptID"));
 
             ViewBag.StatusCount = JsonConvert.SerializeObject(dashboard.StatusCount);
             ViewBag.StatusLabel = JsonConvert.SerializeObject(dashboard.StatusLabel);
             ViewBag.StatusColor = JsonConvert.SerializeObject(dashboard.Color);
+
+            activity = DBF.GetRecentActivity();
         
-            return View("~/Views/Dashboard/DashboardDev.cshtml");
+            return View("~/Views/Dashboard/DashboardDev.cshtml", activity);
         
         }
+
+        public ActionResult AuditPage() {
+
+            DBFunctions DBF = new DBFunctions();
+
+            List<Activity> activity = new List<Activity>();
+
+            activity = DBF.GetAudit();
+
+            return View("~/Views/Audit/Audit.cshtml", activity);
+            
+        }
+
+        public ActionResult ArchivePage() {
+
+            DBFunctions DBF = new DBFunctions();
+
+            List<HomePage> HP = new List<HomePage>();
+
+            HP = DBF.FetchAllArchive();
+
+            return View("~/Views/Archive/Archive.cshtml", HP);
+
+
+        }
+
     }
 }

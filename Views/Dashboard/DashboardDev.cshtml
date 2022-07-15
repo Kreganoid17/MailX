@@ -2,6 +2,8 @@
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
 
+@model IEnumerable<Mail_X.Models.Activity>
+
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
 
 <link rel="stylesheet" href="/css/Theme.css">
@@ -62,37 +64,6 @@
 
     <div class = "row" style = "height:80px;" id = "Card">
 
-        @*<div class = "card col mx-1 justify-content-center" style = "border-left:5px solid blue;" id = "DBoard">
-
-            <div class = "row" id = "row">
-
-                <div class = "col float-start">1</div>
-                <div class = "col float-end text-center">2</div>
-         
-
-            </div>
-            
-
-        </div>
-
-        <div class = "card col mx-1 text-center" id = "DBoard">
-
-            <p>2</p>
-    
-         </div>
-
-         <div class = "card col mx-1 text-center" id = "DBoard">
-
-            <p>3</p>
-
-        </div>
-
-        <div class = "card col mx-1 text-center" id = "DBoard">
-
-            <p>4</p>
-    
-         </div>*@
-
     </div>
 
 </div>
@@ -103,7 +74,7 @@
 
     <div class = "row align-items-end">
 
-        <div class = "card col-9" style = "background-color:#ffffff; height:320px; border-radius:5px;">
+        <div class = "card col-8" style = "background-color:#ffffff; height:320px; border-radius:5px; box-shadow: 3px 0px 10px rgb(0 0 0 / 0.2);">
 
             <div>
 
@@ -113,7 +84,7 @@
 
         </div>
 
-        <div class = "card col" style = "background-color:#ffffff; height:320px; border-radius:5px; margin-left:8px;">
+        <div class = "card col" style = "background-color:#ffffff; height:320px; border-radius:5px; margin-left:8px; box-shadow: 3px 0px 10px rgb(0 0 0 / 0.2);">
 
             <div>
 
@@ -124,6 +95,95 @@
         </div>
 
     </div>
+
+</div>
+
+<br></br>
+
+<div class = "text-center">
+
+    <h2><b>Recent Activity</b></h2>
+
+</div>
+
+<br>
+
+<div class = "col w-100" style = "background-color:#ffffff; box-shadow: 3px 0px 10px rgb(0 0 0 / 0.2); height:500px;border-radius: 10px;" id = "scroll">
+
+    <br>
+
+        @if (Model.Count() > 0)
+        {
+
+            foreach(var item in Model){
+    
+                <div class = "card m-2 col" style = "box-shadow: 3px 0px 10px rgb(0 0 0 / 0.2);border-radius: 10px; background-color:#E2E2E2;">
+
+                    <div class = "row">
+
+                        <div class = "mt-2 col" style = "height:80px; margin-left:20px;">
+
+                            <div class = "float-start">
+
+                                Name: @item.EmpName
+
+                            </div>
+
+                        </div>
+
+                        <div class = "mt-2 col" style = "height:80px;">
+
+                            <div class = "text-center">
+
+                                EmpID: @item.EmpID
+
+                            </div>
+
+                        </div>
+
+                        <div class = "mt-2 col" style = "height:80px;">
+
+                            <div class = "text-center">
+
+                                Dept: @item.Dept
+
+                            </div>
+
+                        </div>
+
+                        <div class = "mt-2 col" style = "height:80px; margin-right:20px;">
+
+                            <div class = "float-end">
+
+                                Date: @item.DateCreated
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    
+                    <div class = "row">
+
+                        <div class = "text-center" style = "height:80px; margin-bottom:-30px; margin-top:-30px;">@item.Desc</div>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+            }
+
+        }else if(Model.Count() <= 0)
+        {
+            
+            <h2 class = "text-center">No Activities</h2>
+
+        }
+
+    
 
 </div>
 
@@ -138,6 +198,8 @@
     var Color = JSON.parse(jsoncolor.replace(/&quot;/g,'"'));
 
     function CreateCard(){
+
+        
     
         for(var i = 0; i < Count.length; i++){
         
@@ -244,7 +306,7 @@ const myChart2 = new Chart(ctx2, {
 
         maintainAspectRatio : false,
         responsive: true,
-
+        
     }
 }); 
 

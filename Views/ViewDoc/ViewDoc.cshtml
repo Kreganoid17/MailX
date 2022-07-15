@@ -7,10 +7,10 @@
 
 
 
-<div class = "col-4 float-end mt-2">
+<div class = "col-5 float-end">
 
         
-        <h2>Software Release To Deployment</h2>
+        <h2 style = "margin-top:45px;">Software Release To Deployment</h2>
 
     </div>
 
@@ -111,8 +111,7 @@
     <div class = "col-12">
 
         <div class = "row">
-
-            onclick="location.href='@Url.Action("Accept", "Form", new {@ViewBag.ID})'
+            
             <div class = "col">              
                                     
                     <input type="button" value = "Accept" class="btn btn-primary float-end mx-2" style = "background-color: rgba(0,128,0,0.7); border-color:green;" data-bs-toggle = "modal" data-bs-target="#CommentModal">
@@ -197,14 +196,16 @@
 
         
 
-        @if(Model.SignOffs != null)
+        @if(Model.SignOffs.Count >= 0)
         {
             <br></br>
+            <h2>Approvals</h2>
+            <br>
 
             for (int i = 0; i < Model.SignOffs.Count; i++)
             {
-                <h2>Approvals</h2>
-                <div class = "container">
+ 
+    <div class = "card p-2" id = "Finput">
 
     <div class = "col">
 
@@ -253,9 +254,9 @@
 
      </div>
 
-</div>
+     </div>
 
-<br>
+<br></br>
 
             }
 

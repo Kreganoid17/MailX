@@ -6,9 +6,28 @@ namespace Mail_X.Controllers
 {
     public class FormController : Controller
     {
+        public string SetProc() {
+
+            return HttpContext.Session.GetString("Proc");
+
+        }
+
         public IActionResult Index()
         {
             return View();
+        }
+
+        public History PopHistory(string Desc) {
+
+            History history = new History();
+
+            history.EmpID = HttpContext.Session.GetString("ID");
+            history.EmpName = HttpContext.Session.GetString("Username");
+            history.DeptID = HttpContext.Session.GetString("DeptID");
+            history.Description = Desc;
+
+            return history;
+
         }
 
         public ActionResult ShowForm() {
@@ -44,11 +63,15 @@ namespace Mail_X.Controllers
 
                     DBF.AddForm(FD);
 
+                    DBF.AddHistory(PopHistory("Created Deployment Form with Project ID: " + FD.ProjectID + " and Project Name: " + FD.ProjectName));
+
                     int ID = DBF.GetRecentAdded();
 
                     DBF.AddSignOff(ID,SO);
 
-                    HP = DBF.FetchAll();
+                    DBF.AddHistory(PopHistory("Signed Off On Form with Project ID: " + FD.ProjectID + " and Project Name : " + FD.ProjectName));
+
+                    HP = DBF.FetchAll(SetProc());
 
                     TempData["Message"] = "Form Created Successfuly";
 
@@ -95,7 +118,9 @@ namespace Mail_X.Controllers
 
                     DBF.UpdateForm(FD, ID);
 
-                    HP = DBF.FetchAll();
+                    DBF.AddHistory(PopHistory("Updated Deployment Form with Project ID: " + FD.ProjectID + " and Project Name: " + FD.ProjectName));
+
+                    HP = DBF.FetchAll(SetProc());
 
                     TempData["Message"] = "Form Updated Successfuly";
 
@@ -136,7 +161,7 @@ namespace Mail_X.Controllers
 
                     List<HomePage> HP = new List<HomePage>();
 
-                    HP = DBF.FetchAll();
+                    HP = DBF.FetchAll(SetProc());
 
                     TempData["Message"] = "Approval Successfuly Added!";
 
@@ -166,6 +191,8 @@ namespace Mail_X.Controllers
 
             DBF.SetStatus(ID,1);
 
+            DBF.AddHistory(PopHistory("Rejected Form"));
+
             TempData["Message"] = "Rejection Successfully";
 
             return RedirectToAction("ReturnHome","HomePage");
@@ -187,6 +214,9 @@ namespace Mail_X.Controllers
             DBF.AddSignOff(ID,SO);
 
             DBF.SetStatus(ID, 2);
+
+            DBF.AddHistory(PopHistory("Approved Form"));
+                
 
             TempData["Message"] = "Approved Successfully";
 
